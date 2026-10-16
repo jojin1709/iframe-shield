@@ -3,41 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Official Swagger-style API Reference and Interactive Developer Documentation for iframe-shield SDK.">
-  <title>IframeShield API Documentation &mdash; Swagger Style</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <meta name="description" content="Technical API Reference and Developer Documentation for iframe-shield &mdash; Client-side security SDK for modern web applications.">
+  <meta property="og:title" content="iframe-shield API Reference & Documentation">
+  <meta property="og:description" content="Complete API specification, schemas, integration guides, and live interactive method playground for iframe-shield SDK.">
+  <meta property="og:url" content="https://jojin1709.github.io/iframe-shield/docs/">
+  <meta property="og:type" content="website">
+  <title>iframe-shield &mdash; API Reference & Developer Documentation</title>
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0f19;
-      --bg-surface: #111827;
-      --bg-subtle: #1f2937;
-      --border: rgba(255, 255, 255, 0.1);
-      --border-focus: #6366f1;
-      --text: #f9fafb;
-      --text-muted: #9ca3af;
-      --text-dim: #6b7280;
-      --primary: #6366f1;
-      --primary-hover: #4f46e5;
-      --green: #10b981;
-      --green-bg: rgba(16, 185, 129, 0.1);
-      --green-border: rgba(16, 185, 129, 0.35);
-      --blue: #3b82f6;
-      --blue-bg: rgba(59, 130, 246, 0.1);
-      --blue-border: rgba(59, 130, 246, 0.35);
-      --orange: #f59e0b;
-      --orange-bg: rgba(245, 158, 11, 0.1);
-      --orange-border: rgba(245, 158, 11, 0.35);
-      --red: #ef4444;
-      --red-bg: rgba(239, 68, 68, 0.1);
-      --red-border: rgba(239, 68, 68, 0.35);
-      --purple: #8b5cf6;
-      --purple-bg: rgba(139, 92, 246, 0.1);
-      --purple-border: rgba(139, 92, 246, 0.35);
-      --code-bg: #070a12;
-      --radius: 10px;
+      --bg-base: #080B12;
+      --bg-surface: #0E131D;
+      --bg-surface-elevated: #131A26;
+      --bg-surface-subtle: #171E2B;
+      --border-subtle: #1E2638;
+      --border-muted: #2A364F;
+      --border-focus: #2563EB;
+      --text-primary: #F5F7FA;
+      --text-secondary: #9AA4B2;
+      --text-muted: #667085;
+      --accent-blue: #2563EB;
+      --accent-cyan: #38BDF8;
+      --status-green: #22C55E;
+      --status-green-bg: rgba(34, 197, 94, 0.08);
+      --status-green-border: rgba(34, 197, 94, 0.25);
+      --status-red: #EF4444;
+      --status-red-bg: rgba(239, 68, 68, 0.08);
+      --status-red-border: rgba(239, 68, 68, 0.25);
+      --status-amber: #F59E0B;
+      --status-amber-bg: rgba(245, 158, 11, 0.08);
+      --status-amber-border: rgba(245, 158, 11, 0.25);
+      --status-purple: #A855F7;
+      --status-purple-bg: rgba(168, 85, 247, 0.08);
+      --status-purple-border: rgba(168, 85, 247, 0.25);
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 10px;
+      --max-width: 1400px;
     }
 
     * {
@@ -46,440 +51,927 @@
       padding: 0;
     }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      line-height: 1.6;
-      padding-bottom: 80px;
+    html {
+      scroll-behavior: smooth;
     }
 
-    /* Top Navigation */
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Focus accessibility */
+    :focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 2px;
+    }
+
+    /* Header matching homepage */
     header {
-      background: #0d1322;
-      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
-      z-index: 100;
-      padding: 14px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      z-index: 1000;
+      padding: 0 24px;
+      height: 60px;
     }
 
-    .brand {
+    .header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      height: 100%;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       text-decoration: none;
       color: inherit;
     }
 
-    .brand-icon {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: #fff;
-      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+    .brand-logo-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
     }
 
-    .brand-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .swagger-badge {
-      font-size: 0.72rem;
-      font-family: 'Fira Code', monospace;
+    .brand-name {
       font-weight: 700;
-      background: #49cc90;
-      color: #0b0f19;
-      padding: 2px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
     }
 
-    .nav-links {
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-center {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 4px;
     }
 
-    .nav-btn {
-      color: var(--text-muted);
+    .nav-link {
+      color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.04);
-      transition: all 0.2s ease;
-    }
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-    }
-    .nav-btn.primary {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s ease, background 0.15s ease;
     }
 
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 32px auto;
-      padding: 0 24px;
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: var(--bg-surface-elevated);
     }
 
-    /* Swagger Info Header */
-    .swagger-info {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      margin-bottom: 32px;
-      position: relative;
+    .nav-link.active {
+      color: var(--text-primary);
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-subtle);
     }
 
-    .info-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 8px;
+    .nav-actions {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .info-version {
-      font-size: 0.85rem;
-      font-family: 'Fira Code', monospace;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 4px 10px;
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--status-green);
+      background: var(--status-green-bg);
+      border: 1px solid var(--status-green-border);
+      padding: 3px 8px;
       border-radius: 9999px;
-      color: #cbd5e1;
     }
 
-    .info-desc {
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--status-green);
+      border-radius: 50%;
+    }
+
+    .btn-header-gh {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-header-gh:hover {
+      border-color: var(--border-muted);
+      background: var(--bg-surface-subtle);
+    }
+
+    /* Mobile menu button */
+    .btn-menu-toggle {
+      display: none;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    /* Documentation Shell Layout */
+    .docs-layout {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 220px;
+      gap: 32px;
+      padding: 32px 24px 80px 24px;
+      position: relative;
+    }
+
+    /* Left Sidebar */
+    .docs-sidebar {
+      position: sticky;
+      top: 92px;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+      padding-right: 12px;
+    }
+
+    .docs-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .docs-sidebar::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 2px;
+    }
+
+    .sidebar-group {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-group-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
       color: var(--text-muted);
-      font-size: 1.05rem;
-      margin-bottom: 20px;
-      max-width: 800px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      padding-left: 8px;
     }
 
-    .info-meta {
+    .sidebar-links {
+      list-style: none;
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
+      flex-direction: column;
+      gap: 2px;
     }
-    .info-meta strong {
-      color: var(--text);
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      border-left: 2px solid transparent;
     }
-    .info-meta a {
-      color: var(--primary);
+
+    .sidebar-link:hover {
+      color: var(--text-primary);
+      background: var(--bg-surface-subtle);
+    }
+
+    .sidebar-link.active {
+      color: var(--text-primary);
+      background: var(--bg-surface-elevated);
+      border-left-color: var(--accent-blue);
+      font-weight: 500;
+    }
+
+    .sidebar-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .badge-init { color: var(--status-green); background: var(--status-green-bg); }
+    .badge-get { color: var(--accent-cyan); background: rgba(56, 189, 248, 0.08); }
+    .badge-allow { color: var(--status-amber); background: var(--status-amber-bg); }
+    .badge-block { color: var(--status-red); background: var(--status-red-bg); }
+    .badge-hook { color: var(--status-purple); background: var(--status-purple-bg); }
+    .badge-stop { color: var(--status-red); background: var(--status-red-bg); }
+
+    /* Center Content */
+    .docs-content {
+      min-width: 0;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .breadcrumbs a {
+      color: var(--text-secondary);
       text-decoration: none;
     }
-    .info-meta a:hover {
+    .breadcrumbs a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Spec Header Card */
+    .spec-header-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .spec-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .spec-title-row h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .version-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 3px 8px;
+      border-radius: 9999px;
+    }
+
+    .spec-description {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .spec-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+      font-size: 12px;
+    }
+
+    .spec-meta-item span {
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .spec-meta-item strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .spec-meta-item a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+    }
+    .spec-meta-item a:hover {
       text-decoration: underline;
     }
 
-    /* Server Bar */
-    .server-select-bar {
-      background: #0f172a;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 24px;
-      margin-bottom: 32px;
+    /* Section styling */
+    .docs-section {
+      margin-bottom: 48px;
+      scroll-margin-top: 80px;
+    }
+
+    .section-header {
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
       display: flex;
-      align-items: center;
+      align-items: baseline;
+      justify-content: space-between;
       gap: 16px;
     }
-    .server-label {
-      font-size: 0.85rem;
+
+    .section-header h2 {
+      font-size: 20px;
       font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+
+    .section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .server-pill {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.9rem;
-      background: #090d1a;
-      border: 1px solid var(--border);
-      padding: 6px 14px;
-      border-radius: 6px;
-      color: var(--green);
+      letter-spacing: 0.06em;
     }
 
-    /* Method Group */
-    .endpoint-group {
-      margin-bottom: 32px;
+    .docs-prose {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 20px;
     }
 
-    .group-header {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+    .docs-prose p {
+      margin-bottom: 12px;
     }
 
-    /* Swagger Method Card */
+    .docs-prose strong {
+      color: var(--text-primary);
+    }
+
+    .docs-prose code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      color: #cbd5e1;
+    }
+
+    /* Method Card (Swagger / OpenAPI Style with clean aesthetics) */
     .method-card {
       background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
       overflow: hidden;
-      transition: border-color 0.2s ease;
+      transition: border-color 0.15s ease;
     }
 
-    .method-card.post { border-color: var(--green-border); }
-    .method-card.get { border-color: var(--blue-border); }
-    .method-card.put { border-color: var(--orange-border); }
-    .method-card.delete { border-color: var(--red-border); }
-    .method-card.listen { border-color: var(--purple-border); }
+    .method-card:hover {
+      border-color: var(--border-muted);
+    }
+
+    .method-card.open {
+      border-color: var(--border-muted);
+    }
 
     .method-header {
-      padding: 14px 20px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
       user-select: none;
+      background: var(--bg-surface);
+      border-left: 3px solid transparent;
+      gap: 12px;
       transition: background 0.15s ease;
     }
 
-    .method-card.post .method-header { background: var(--green-bg); }
-    .method-card.get .method-header { background: var(--blue-bg); }
-    .method-card.put .method-header { background: var(--orange-bg); }
-    .method-card.delete .method-header { background: var(--red-bg); }
-    .method-card.listen .method-header { background: var(--purple-bg); }
-
     .method-header:hover {
-      opacity: 0.9;
+      background: var(--bg-surface-elevated);
     }
+
+    .method-card.init .method-header { border-left-color: var(--status-green); }
+    .method-card.get .method-header { border-left-color: var(--accent-cyan); }
+    .method-card.scan .method-header { border-left-color: var(--accent-blue); }
+    .method-card.allow .method-header { border-left-color: var(--status-amber); }
+    .method-card.block .method-header { border-left-color: var(--status-red); }
+    .method-card.hook .method-header { border-left-color: var(--status-purple); }
+    .method-card.stop .method-header { border-left-color: var(--status-red); }
+    .method-card.gen .method-header { border-left-color: var(--accent-cyan); }
 
     .method-identity {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+      flex-wrap: wrap;
     }
 
     .method-badge {
-      font-family: 'Fira Code', monospace;
-      font-weight: 800;
-      font-size: 0.85rem;
-      padding: 4px 12px;
-      border-radius: 6px;
-      color: #fff;
-      min-width: 80px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      min-width: 60px;
       text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
-    .post .method-badge { background: var(--green); }
-    .get .method-badge { background: var(--blue); }
-    .put .method-badge { background: var(--orange); }
-    .delete .method-badge { background: var(--red); }
-    .listen .method-badge { background: var(--purple); }
+    .badge-style-init { background: var(--status-green-bg); color: var(--status-green); border: 1px solid var(--status-green-border); }
+    .badge-style-get { background: rgba(56, 189, 248, 0.08); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.25); }
+    .badge-style-scan { background: rgba(37, 99, 235, 0.08); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.25); }
+    .badge-style-allow { background: var(--status-amber-bg); color: var(--status-amber); border: 1px solid var(--status-amber-border); }
+    .badge-style-block { background: var(--status-red-bg); color: var(--status-red); border: 1px solid var(--status-red-border); }
+    .badge-style-hook { background: var(--status-purple-bg); color: var(--status-purple); border: 1px solid var(--status-purple-border); }
+    .badge-style-stop { background: var(--status-red-bg); color: var(--status-red); border: 1px solid var(--status-red-border); }
+    .badge-style-gen { background: rgba(6, 182, 212, 0.08); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.25); }
 
-    .method-path {
-      font-family: 'Fira Code', monospace;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #fff;
+    .method-signature {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-primary);
     }
 
     .method-summary {
-      font-size: 0.88rem;
+      font-size: 13px;
       color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .chevron {
-      font-size: 0.85rem;
-      transition: transform 0.25s ease;
+    .method-chevron {
       color: var(--text-muted);
+      font-size: 12px;
+      transition: transform 0.2s ease;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .method-card.open .chevron {
+
+    .method-card.open .method-chevron {
       transform: rotate(180deg);
     }
 
-    /* Method Body / Expandable Content */
+    /* Method Body */
     .method-body {
       display: none;
-      padding: 24px;
-      border-top: 1px solid var(--border);
-      background: #090e1c;
+      padding: 20px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-base);
     }
+
     .method-card.open .method-body {
       display: block;
     }
 
-    .section-title {
-      font-size: 0.85rem;
-      font-weight: 700;
+    .method-desc {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .sub-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-dim);
-      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
     }
 
     /* Parameters Table */
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+
     .params-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 24px;
-      font-size: 0.88rem;
-    }
-    .params-table th, .params-table td {
-      padding: 10px 14px;
+      font-size: 12px;
       text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .params-table th {
-      background: rgba(255, 255, 255, 0.03);
-      color: var(--text-dim);
-      font-weight: 700;
-    }
-    .param-name {
-      font-family: 'Fira Code', monospace;
-      font-weight: 600;
-      color: #e2e8f0;
-    }
-    .param-type {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.78rem;
-      color: var(--primary);
-    }
-    .param-required {
-      color: var(--red);
-      font-weight: 700;
-      font-size: 0.75rem;
     }
 
-    /* Try It Out Bar */
+    .params-table th, .params-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .params-table th {
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .params-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .param-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .param-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-cyan);
+    }
+
+    .param-badge-req {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--status-red);
+      background: var(--status-red-bg);
+      border: 1px solid var(--status-red-border);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .param-badge-opt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .param-desc {
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .param-desc code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: var(--bg-surface-elevated);
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #e2e8f0;
+    }
+
+    /* Returns section */
+    .returns-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .returns-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .returns-type {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent-cyan);
+      font-size: 12px;
+    }
+
+    .returns-desc {
+      color: var(--text-secondary);
+    }
+
+    /* Interactive Try Bar */
     .try-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-      padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 8px;
-    }
-    .btn-try {
-      background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      font-weight: 700;
-      padding: 6px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.2s ease;
-    }
-    .btn-try:hover {
-      background: var(--primary);
-      color: #fff;
-    }
-    .btn-execute {
-      background: var(--green);
-      border: none;
-      color: #0b0f19;
-      font-weight: 800;
-      padding: 8px 24px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: inherit;
-      display: none;
-      transition: opacity 0.2s ease;
-    }
-    .btn-execute:hover {
-      opacity: 0.9;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    /* Response Box */
-    .response-box {
-      display: none;
-      margin-top: 20px;
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
+    .try-bar-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+
+    .try-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action-sm {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface-elevated);
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-sm:hover {
+      color: var(--text-primary);
+      border-color: var(--border-muted);
+    }
+
+    .btn-execute {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: #fff;
+      display: none;
+    }
+    .btn-execute:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      color: #fff;
+    }
+
+    /* Live Response Box */
+    .response-container {
+      display: none;
+      margin-top: 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #06090F;
+    }
+
     .response-header {
-      background: #0f1629;
-      padding: 8px 16px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 6px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.78rem;
-      font-family: 'Fira Code', monospace;
-      border-bottom: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
     }
-    .status-badge {
-      background: var(--green-bg);
-      color: var(--green);
-      border: 1px solid var(--green-border);
-      padding: 2px 8px;
-      border-radius: 4px;
+
+    .response-status-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-code-tag {
       font-weight: 700;
+      color: var(--status-green);
+      background: var(--status-green-bg);
+      border: 1px solid var(--status-green-border);
+      padding: 1px 6px;
+      border-radius: 3px;
     }
-    .response-body {
-      padding: 16px;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.85rem;
+
+    .response-time {
+      color: var(--text-muted);
+    }
+
+    .response-content {
+      padding: 12px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
       color: #cbd5e1;
       max-height: 240px;
       overflow-y: auto;
       white-space: pre-wrap;
+      line-height: 1.5;
     }
 
-    /* Schemas Accordion */
-    .schema-section {
-      margin-top: 48px;
+    /* Code Blocks */
+    .code-block {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin: 16px 0 24px 0;
     }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 14px;
+      background: var(--bg-surface-elevated);
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-copy {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-copy:hover {
+      color: var(--text-primary);
+      border-color: var(--border-muted);
+    }
+
+    .code-block pre {
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      overflow-x: auto;
+      background: #06090F;
+    }
+
+    .code-kw { color: #f472b6; }
+    .code-str { color: #34d399; }
+    .code-num { color: #fbbf24; }
+    .code-com { color: #64748b; font-style: italic; }
+    .code-fn { color: #60a5fa; }
+    .code-prop { color: #93c5fd; }
+
+    /* Schema Accordion */
     .schema-card {
       background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
       margin-bottom: 12px;
       overflow: hidden;
     }
+
     .schema-header {
-      padding: 14px 20px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       cursor: pointer;
-      font-family: 'Fira Code', monospace;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.02);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--bg-surface);
+      user-select: none;
+      transition: background 0.15s ease;
     }
+
+    .schema-header:hover {
+      background: var(--bg-surface-elevated);
+    }
+
     .schema-body {
       display: none;
-      padding: 20px;
-      border-top: 1px solid var(--border);
-      background: #070a12;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.85rem;
+      padding: 16px;
+      border-top: 1px solid var(--border-subtle);
+      background: #06090F;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
       color: #94a3b8;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.5;
     }
+
     .schema-card.open .schema-body {
       display: block;
+    }
+
+    /* Right Sidebar (On this page) */
+    .docs-toc {
+      position: sticky;
+      top: 92px;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .toc-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-left: 1px solid var(--border-subtle);
+      padding-left: 12px;
+    }
+
+    .toc-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      transition: color 0.15s ease;
+      display: block;
+      line-height: 1.4;
+    }
+
+    .toc-link:hover {
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .docs-layout {
+        grid-template-columns: 240px minmax(0, 1fr);
+      }
+      .docs-toc {
+        display: none;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .docs-layout {
+        grid-template-columns: 1fr;
+        padding-top: 20px;
+      }
+      .btn-menu-toggle {
+        display: inline-block;
+      }
+      .docs-sidebar {
+        display: none;
+        position: static;
+        height: auto;
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 20px;
+        margin-bottom: 24px;
+      }
+      .docs-sidebar.mobile-open {
+        display: block;
+      }
+      .nav-center {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -487,394 +979,1035 @@
 
   <!-- Header -->
   <header>
-    <a href="../demo/index.html" class="brand">
-      <div class="brand-icon">&#x1F6E1;</div>
-      <div>
-        <div class="brand-title">IframeShield Docs</div>
-      </div>
-      <span class="swagger-badge">SWAGGER / API</span>
-    </a>
+    <div class="header-inner">
+      <a href="../" class="brand-group">
+        <img src="logo.png" alt="iframe-shield logo" class="brand-logo-img">
+        <span class="brand-name">iframe-shield</span>
+        <span class="brand-tag">Developer SDK</span>
+      </a>
 
-    <div class="nav-links">
-      <a href="../demo/index.html" class="nav-btn primary">&#x1F9EA; Live Playground</a>
-      <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener" class="nav-btn">GitHub Repo</a>
+      <nav class="nav-center">
+        <a href="#overview" class="nav-link active">Documentation</a>
+        <a href="../#playground" class="nav-link">Playground</a>
+        <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener" class="nav-link">GitHub</a>
+        <a href="https://www.npmjs.com/package/iframe-shield" target="_blank" rel="noopener" class="nav-link">npm</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-menu-toggle" onclick="toggleSidebarMenu()" aria-label="Toggle navigation drawer">
+          Menu
+        </button>
+
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>Engine Active</span>
+        </div>
+
+        <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener" class="btn-header-gh">
+          <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>Star</span>
+        </a>
+      </div>
     </div>
   </header>
 
-  <div class="container">
-    <!-- Swagger Info Card -->
-    <div class="swagger-info">
-      <div class="info-title">
-        <span>iframe-shield API Spec</span>
-        <span class="info-version">v1.0.0</span>
-      </div>
-      <p class="info-desc">
-        Comprehensive interactive developer specification for the <code>iframe-shield</code> SDK. Use this reference to inspect and test all client-side engine methods, security event listeners, dynamic whitelisting APIs, and Cloudflare Edge worker directives.
-      </p>
-      <div class="info-meta">
-        <div>Developer: <strong>JOJIN JOHN</strong></div>
-        <div>License: <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a></div>
-        <div>Repository: <a href="https://github.com/jojin1709/iframe-shield" target="_blank">jojin1709/iframe-shield</a></div>
-        <div>CDN: <code>https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js</code></div>
-      </div>
-    </div>
-
-    <!-- Base Server Bar -->
-    <div class="server-select-bar">
-      <span class="server-label">Active Engine Environment:</span>
-      <span class="server-pill">Browser DOM &bull; window.IframeShield (Embedded Sandbox)</span>
-    </div>
-
-    <!-- Endpoints Group 1: Core Engine -->
-    <div class="endpoint-group">
-      <div class="group-header">
-        <span>⚙️ Core Shield Engine</span>
+  <div class="docs-layout">
+    <!-- Left Sticky Sidebar -->
+    <aside class="docs-sidebar" id="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">Getting Started</div>
+        <ul class="sidebar-links">
+          <li><a href="#overview" class="sidebar-link active">Overview</a></li>
+          <li><a href="#installation" class="sidebar-link">Installation</a></li>
+          <li><a href="#quick-start" class="sidebar-link">Quick Start</a></li>
+        </ul>
       </div>
 
-      <!-- IframeShield.init(options) -->
-      <div class="method-card post" id="card-init">
-        <div class="method-header" onclick="toggleCard('card-init')">
-          <div class="method-identity">
-            <span class="method-badge">INIT</span>
-            <span class="method-path">IframeShield.init(options)</span>
-            <span class="method-summary">Initialize the shield and start pre-emptive DOM interception</span>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
-
-        <div class="method-body">
-          <div class="section-title">Parameters</div>
-          <table class="params-table">
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="param-name">options.action</span></td>
-                <td><span class="param-type">string</span></td>
-                <td>Optional (default: <code>'sandbox'</code>)</td>
-                <td>Mitigation action: <code>'sandbox'</code> | <code>'remove'</code> | <code>'blank'</code>.</td>
-              </tr>
-              <tr>
-                <td><span class="param-name">options.sandboxUntrusted</span></td>
-                <td><span class="param-type">boolean</span></td>
-                <td>Optional (default: <code>true</code>)</td>
-                <td>Automatically sandboxes third-party frames not in the trusted whitelist.</td>
-              </tr>
-              <tr>
-                <td><span class="param-name">options.blockTrackingPixels</span></td>
-                <td><span class="param-type">boolean</span></td>
-                <td>Optional (default: <code>true</code>)</td>
-                <td>Neutralizes hidden 1x1 or 0x0 surveillance tracking frames.</td>
-              </tr>
-              <tr>
-                <td><span class="param-name">options.trustedDomains</span></td>
-                <td><span class="param-type">string[]</span></td>
-                <td>Optional</td>
-                <td>Array of custom domain strings to always permit (e.g. <code>['partner.com']</code>).</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="try-bar">
-            <span>Live Interactive Execution</span>
-            <div>
-              <button class="btn-try" onclick="enableTry('card-init')">Try it out</button>
-              <button class="btn-execute" id="exec-init" onclick="executeInit()">Execute</button>
-            </div>
-          </div>
-
-          <div class="response-box" id="resp-init">
-            <div class="response-header">
-              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
-              <span id="time-init">3ms</span>
-            </div>
-            <div class="response-body" id="body-init"></div>
-          </div>
-        </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">Security Architecture</div>
+        <ul class="sidebar-links">
+          <li><a href="#dom-boundary" class="sidebar-link">DOM Boundary Hook</a></li>
+          <li><a href="#threat-detection" class="sidebar-link">Threat Heuristics</a></li>
+          <li><a href="#sandboxing" class="sidebar-link">Sandboxing Policy</a></li>
+        </ul>
       </div>
 
-      <!-- IframeShield.getStats() -->
-      <div class="method-card get" id="card-stats">
-        <div class="method-header" onclick="toggleCard('card-stats')">
-          <div class="method-identity">
-            <span class="method-badge">GET</span>
-            <span class="method-path">IframeShield.getStats()</span>
-            <span class="method-summary">Retrieve current scan counters and threat interception telemetry</span>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
-
-        <div class="method-body">
-          <div class="section-title">Parameters</div>
-          <p style="color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px;">No parameters required for telemetry retrieval.</p>
-
-          <div class="try-bar">
-            <span>Live Interactive Execution</span>
-            <div>
-              <button class="btn-try" onclick="enableTry('card-stats')">Try it out</button>
-              <button class="btn-execute" id="exec-stats" onclick="executeGetStats()">Execute</button>
-            </div>
-          </div>
-
-          <div class="response-box" id="resp-stats">
-            <div class="response-header">
-              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
-              <span id="time-stats">1ms</span>
-            </div>
-            <div class="response-body" id="body-stats"></div>
-          </div>
-        </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">API Reference</div>
+        <ul class="sidebar-links">
+          <li>
+            <a href="#method-init" class="sidebar-link">
+              <span>init()</span>
+              <span class="sidebar-badge badge-init">INIT</span>
+            </a>
+          </li>
+          <li>
+            <a href="#method-scan" class="sidebar-link">
+              <span>scan()</span>
+              <span class="sidebar-badge badge-get">SCAN</span>
+            </a>
+          </li>
+          <li>
+            <a href="#method-stats" class="sidebar-link">
+              <span>getStats()</span>
+              <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+          <li>
+            <a href="#method-allow" class="sidebar-link">
+              <span>allowDomain()</span>
+              <span class="sidebar-badge badge-allow">ALLOW</span>
+            </a>
+          </li>
+          <li>
+            <a href="#method-block" class="sidebar-link">
+              <span>blockDomain()</span>
+              <span class="sidebar-badge badge-block">BLOCK</span>
+            </a>
+          </li>
+          <li>
+            <a href="#method-hook" class="sidebar-link">
+              <span>onBlocked()</span>
+              <span class="sidebar-badge badge-hook">HOOK</span>
+            </a>
+          </li>
+          <li>
+            <a href="#method-csp" class="sidebar-link">
+              <span>generateCSP()</span>
+              <span class="sidebar-badge badge-get">GEN</span>
+            </a>
+          </li>
+          <li>
+            <a href="#method-destroy" class="sidebar-link">
+              <span>destroy()</span>
+              <span class="sidebar-badge badge-stop">STOP</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
-      <!-- IframeShield.generateCSP() -->
-      <div class="method-card get" id="card-csp">
-        <div class="method-header" onclick="toggleCard('card-csp')">
-          <div class="method-identity">
-            <span class="method-badge">GEN</span>
-            <span class="method-path">IframeShield.generateCSP(customDomains)</span>
-            <span class="method-summary">Generate HTTP Content-Security-Policy & frame-ancestors directives</span>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
-
-        <div class="method-body">
-          <div class="section-title">Parameters</div>
-          <table class="params-table">
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="param-name">customDomains</span></td>
-                <td><span class="param-type">string[]</span></td>
-                <td>Optional</td>
-                <td>Additional partner domains to include in the generated <code>frame-src</code> header.</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="try-bar">
-            <span>Live Interactive Execution</span>
-            <div>
-              <button class="btn-try" onclick="enableTry('card-csp')">Try it out</button>
-              <button class="btn-execute" id="exec-csp" onclick="executeGenerateCSP()">Execute</button>
-            </div>
-          </div>
-
-          <div class="response-box" id="resp-csp">
-            <div class="response-header">
-              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
-              <span id="time-csp">2ms</span>
-            </div>
-            <div class="response-body" id="body-csp"></div>
-          </div>
-        </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">Integrations</div>
+        <ul class="sidebar-links">
+          <li><a href="#int-html" class="sidebar-link">HTML / CDN</a></li>
+          <li><a href="#int-bundlers" class="sidebar-link">npm & Vite</a></li>
+          <li><a href="#int-react" class="sidebar-link">Next.js & React</a></li>
+          <li><a href="#int-cloudflare" class="sidebar-link">Cloudflare Worker</a></li>
+        </ul>
       </div>
 
-      <!-- IframeShield.destroy() -->
-      <div class="method-card delete" id="card-destroy">
-        <div class="method-header" onclick="toggleCard('card-destroy')">
-          <div class="method-identity">
-            <span class="method-badge">STOP</span>
-            <span class="method-path">IframeShield.destroy()</span>
-            <span class="method-summary">Disconnect observer and restore original browser DOM methods</span>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
-
-        <div class="method-body">
-          <div class="section-title">Parameters</div>
-          <p style="color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px;">Restores <code>document.createElement</code> and disconnects active <code>MutationObserver</code>.</p>
-
-          <div class="try-bar">
-            <span>Live Interactive Execution</span>
-            <div>
-              <button class="btn-try" onclick="enableTry('card-destroy')">Try it out</button>
-              <button class="btn-execute" id="exec-destroy" onclick="executeDestroy()">Execute</button>
-            </div>
-          </div>
-
-          <div class="response-box" id="resp-destroy">
-            <div class="response-header">
-              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
-              <span id="time-destroy">1ms</span>
-            </div>
-            <div class="response-body" id="body-destroy"></div>
-          </div>
-        </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">Schemas & Reference</div>
+        <ul class="sidebar-links">
+          <li><a href="#schemas" class="sidebar-link">Data Models</a></li>
+          <li><a href="#faq" class="sidebar-link">Security FAQ</a></li>
+        </ul>
       </div>
-    </div>
+    </aside>
 
-    <!-- Endpoints Group 2: Whitelisting & Events -->
-    <div class="endpoint-group">
-      <div class="group-header">
-        <span>🛡️ Dynamic Whitelist & Callbacks</span>
+    <!-- Center Content -->
+    <main class="docs-content">
+      <!-- Breadcrumbs -->
+      <div class="breadcrumbs">
+        <a href="../">iframe-shield</a>
+        <span>/</span>
+        <span>Developer Documentation</span>
+        <span>/</span>
+        <span>v1.0.0</span>
       </div>
 
-      <!-- IframeShield.allowDomain(domain) -->
-      <div class="method-card put" id="card-allow">
-        <div class="method-header" onclick="toggleCard('card-allow')">
-          <div class="method-identity">
-            <span class="method-badge">ALLOW</span>
-            <span class="method-path">IframeShield.allowDomain(domain)</span>
-            <span class="method-summary">Dynamically whitelist a trusted embed host at runtime</span>
+      <!-- Spec Header Card -->
+      <section class="spec-header-card" id="overview">
+        <div class="spec-title-row">
+          <h1>iframe-shield Specification</h1>
+          <span class="version-pill">SDK v1.0.0 &bull; Production Spec</span>
+        </div>
+        <p class="spec-description">
+          Official interactive developer specification and SDK reference for <code>iframe-shield</code>. A lightweight client-side security engine that intercepts iframe creation, neutralizes rogue ads and tracking pixels, disarms unauthorized popups and redirects, and validates trusted third-party embeds.
+        </p>
+
+        <div class="spec-meta-grid">
+          <div class="spec-meta-item">
+            <span>RUNTIME ENVIRONMENT</span>
+            <strong>Browser DOM / window.IframeShield</strong>
           </div>
-          <span class="chevron">&#9660;</span>
+          <div class="spec-meta-item">
+            <span>PACKAGE</span>
+            <strong>iframe-shield</strong>
+          </div>
+          <div class="spec-meta-item">
+            <span>LICENSE</span>
+            <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>
+          </div>
+          <div class="spec-meta-item">
+            <span>REPOSITORY</span>
+            <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener">jojin1709/iframe-shield</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Getting Started: Installation -->
+      <section class="docs-section" id="installation">
+        <div class="section-header">
+          <h2>Installation</h2>
+          <span class="section-eyebrow">GETTING STARTED</span>
+        </div>
+        <div class="docs-prose">
+          <p>Install the package via npm, pnpm, yarn, or directly load the pre-bundled minified script via CDN.</p>
         </div>
 
-        <div class="method-body">
-          <div class="section-title">Parameters</div>
-          <table class="params-table">
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="param-name">domain</span></td>
-                <td><span class="param-type">string</span></td>
-                <td><span class="param-required">Required</span></td>
-                <td>Target domain string to permit (e.g. <code>'my-payment-gateway.com'</code>).</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="code-block">
+          <div class="code-header">
+            <span>terminal</span>
+            <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code>npm install iframe-shield</code></pre>
+        </div>
 
-          <div class="try-bar">
-            <span>Live Interactive Execution</span>
-            <div>
-              <button class="btn-try" onclick="enableTry('card-allow')">Try it out</button>
-              <button class="btn-execute" id="exec-allow" onclick="executeAllowDomain()">Execute (Allow 'custom-partner.com')</button>
+        <div class="code-block">
+          <div class="code-header">
+            <span>index.html &mdash; CDN Script Tag</span>
+            <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="code-com">&lt;!-- Load in &lt;head&gt; before any ad networks or untrusted third-party scripts --&gt;</span>
+&lt;script src=<span class="code-str">"https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"</span>&gt;&lt;/script&gt;
+&lt;script&gt;
+  <span class="code-fn">IframeShield.init</span>({
+    action: <span class="code-str">'sandbox'</span>,
+    sandboxUntrusted: <span class="code-num">true</span>
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- Quick Start -->
+      <section class="docs-section" id="quick-start">
+        <div class="section-header">
+          <h2>Quick Start</h2>
+          <span class="section-eyebrow">INTEGRATION</span>
+        </div>
+        <div class="docs-prose">
+          <p>Initialize the shield at the earliest entry point in your client-side application lifecycle. The engine immediately overrides DOM creation methods and registers a MutationObserver on <code>document.documentElement</code>.</p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>main.ts</span>
+            <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'iframe-shield'</span>;
+
+<span class="code-com">// Start DOM protection</span>
+IframeShield.<span class="code-fn">init</span>({
+  action: <span class="code-str">'sandbox'</span>,
+  sandboxUntrusted: <span class="code-num">true</span>,
+  blockTrackingPixels: <span class="code-num">true</span>,
+  blockClickjackingOverlays: <span class="code-num">true</span>,
+  trustedDomains: [<span class="code-str">'youtube.com'</span>, <span class="code-str">'js.stripe.com'</span>, <span class="code-str">'customer-portal.io'</span>],
+  <span class="code-fn">onBlocked</span>: (event, iframe) =&gt; {
+    console.warn(<span class="code-str">'[Threat Blocked]'</span>, event.src, event.reason);
+  }
+});</code></pre>
+        </div>
+      </section>
+
+      <!-- Security Architecture -->
+      <section class="docs-section" id="dom-boundary">
+        <div class="section-header">
+          <h2>DOM Boundary Interception</h2>
+          <span class="section-eyebrow">SECURITY ARCHITECTURE</span>
+        </div>
+        <div class="docs-prose">
+          <p>
+            Standard ad blockers rely on browser extension privileges or declarative network request filters. <code>iframe-shield</code> operates directly within the web page context using a dual-layer interception architecture:
+          </p>
+          <p>
+            <strong>1. API Monkey-patching:</strong> Wraps <code>document.createElement('iframe')</code> and intercepts the creation of the HTMLIFrameElement before it is connected to the DOM or assigned an initial <code>src</code>.
+          </p>
+          <p>
+            <strong>2. MutationObserver Fallback:</strong> Continuously monitors subtree additions across <code>document.documentElement</code>. Any iframe injected via <code>innerHTML</code>, <code>outerHTML</code>, or dynamic script injection is intercepted and evaluated prior to first rendering.
+          </p>
+        </div>
+      </section>
+
+      <section class="docs-section" id="threat-detection">
+        <div class="section-header">
+          <h2>Threat Heuristics</h2>
+          <span class="section-eyebrow">DETECTION PIPELINE</span>
+        </div>
+        <div class="docs-prose">
+          <p>The classification engine evaluates each frame against four deterministic rules in sequence:</p>
+          <p>
+            <strong>Known Ad Network Blacklist:</strong> Matches the frame URL against over 40 known rogue ad brokers and popunder domains (e.g. DoubleClick, PopAds, Outbrain, Taboola).
+          </p>
+          <p>
+            <strong>Surveillance Tracking Pixels:</strong> Detects frames with <code>width &le; 1px</code> and <code>height &le; 1px</code>, or frames styled with <code>display: none</code> / <code>visibility: hidden</code>.
+          </p>
+          <p>
+            <strong>Clickjacking Overlays:</strong> Intercepts full-viewport frames with <code>opacity &le; 0.05</code> or high <code>z-index</code> overlays positioned directly over interactive content.
+          </p>
+          <p>
+            <strong>Untrusted 3rd-Party Hosts:</strong> When <code>sandboxUntrusted: true</code> is active, any domain not matching the built-in trusted list or configured <code>trustedDomains</code> is restricted with a safe sandbox policy.
+          </p>
+        </div>
+      </section>
+
+      <section class="docs-section" id="sandboxing">
+        <div class="section-header">
+          <h2>Sandboxing Policy</h2>
+          <span class="section-eyebrow">BROWSER ISOLATION</span>
+        </div>
+        <div class="docs-prose">
+          <p>
+            When an iframe is classified for mitigation, the engine enforces <code>sandbox="allow-scripts allow-same-origin"</code> by default. Crucially, the following dangerous capabilities are omitted:
+          </p>
+          <p>
+            <code>allow-top-navigation</code> &mdash; Blocked. Untrusted iframes cannot redirect your parent application.
+          </p>
+          <p>
+            <code>allow-popups</code> &mdash; Blocked. Scripts inside the frame cannot spawn rogue popups, tabs, or new windows.
+          </p>
+          <p>
+            <code>allow-modals</code> &mdash; Blocked. Untrusted iframes cannot display alert, confirm, or prompt dialogs.
+          </p>
+        </div>
+      </section>
+
+      <!-- API Reference: Methods -->
+      <section class="docs-section" id="api-reference">
+        <div class="section-header">
+          <h2>Core Engine API Reference</h2>
+          <span class="section-eyebrow">SWAGGER SPECIFICATION</span>
+        </div>
+        <div class="docs-prose">
+          <p>Explore the live SDK methods below. Click on any method header to expand details, view parameters and return types, and execute live tests against the embedded browser engine.</p>
+        </div>
+
+        <!-- Method: IframeShield.init(options) -->
+        <div class="method-card init open" id="method-init">
+          <div class="method-header" onclick="toggleCard('method-init')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-init">INIT</span>
+              <span class="method-signature">IframeShield.init(options)</span>
+              <span class="method-summary">Initialize engine and start pre-emptive DOM interception</span>
+            </div>
+            <span class="method-chevron">&#9660;</span>
+          </div>
+
+          <div class="method-body">
+            <div class="method-desc">
+              Initializes the singleton shield instance. Installs DOM boundary hooks on <code>document.createElement</code> and begins observing dynamic node insertions across the document.
+            </div>
+
+            <div class="sub-title">Parameters</div>
+            <div class="table-container">
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Requirement</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">options.action</span></td>
+                    <td><span class="param-type">'sandbox' | 'remove' | 'blank'</span></td>
+                    <td><span class="param-badge-opt">Optional (default: 'sandbox')</span></td>
+                    <td class="param-desc">Mitigation action applied to hostile or untrusted iframes.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="param-name">options.sandboxUntrusted</span></td>
+                    <td><span class="param-type">boolean</span></td>
+                    <td><span class="param-badge-opt">Optional (default: true)</span></td>
+                    <td class="param-desc">When true, sandboxes any external frame not present in the trusted whitelist.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="param-name">options.blockTrackingPixels</span></td>
+                    <td><span class="param-type">boolean</span></td>
+                    <td><span class="param-badge-opt">Optional (default: true)</span></td>
+                    <td class="param-desc">Neutralizes hidden 1&times;1 or 0&times;0 surveillance tracking frames.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="param-name">options.blockClickjackingOverlays</span></td>
+                    <td><span class="param-type">boolean</span></td>
+                    <td><span class="param-badge-opt">Optional (default: true)</span></td>
+                    <td class="param-desc">Identifies and neutralizes full-screen invisible clickjacking overlays.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="param-name">options.trustedDomains</span></td>
+                    <td><span class="param-type">string[]</span></td>
+                    <td><span class="param-badge-opt">Optional</span></td>
+                    <td class="param-desc">Custom domain array to permit without sandboxing (e.g. <code>['partner.com']</code>).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">IframeShieldEngine</span>
+              <span class="returns-desc">Active engine instance containing configuration options and stats registry.</span>
+            </div>
+
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-init')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-init" onclick="executeInit()">Execute</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-init">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-init">3ms</span>
+              </div>
+              <div class="response-content" id="body-init"></div>
             </div>
           </div>
+        </div>
 
-          <div class="response-box" id="resp-allow">
-            <div class="response-header">
-              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
-              <span id="time-allow">1ms</span>
+        <!-- Method: IframeShield.scan() -->
+        <div class="method-card scan" id="method-scan">
+          <div class="method-header" onclick="toggleCard('method-scan')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-scan">SCAN</span>
+              <span class="method-signature">IframeShield.scan()</span>
+              <span class="method-summary">Manually trigger a DOM sweep of all currently mounted iframes</span>
             </div>
-            <div class="response-body" id="body-allow"></div>
+            <span class="method-chevron">&#9660;</span>
           </div>
-        </div>
-      </div>
 
-      <!-- IframeShield.onBlocked(callback) -->
-      <div class="method-card listen" id="card-listen">
-        <div class="method-header" onclick="toggleCard('card-listen')">
-          <div class="method-identity">
-            <span class="method-badge">HOOK</span>
-            <span class="method-path">IframeShield.onBlocked(callback)</span>
-            <span class="method-summary">Register an observability callback fired on every intercepted threat</span>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
+          <div class="method-body">
+            <div class="method-desc">
+              Executes a synchronous sweep across <code>document.querySelectorAll('iframe')</code> and evaluates any frames rendered prior to shield initialization or via unmonitored injection.
+            </div>
 
-        <div class="method-body">
-          <div class="section-title">Parameters</div>
-          <table class="params-table">
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Type</th>
-                <th>Required</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="param-name">callback</span></td>
-                <td><span class="param-type">(event: BlockEvent, iframe: Element) =&gt; void</span></td>
-                <td><span class="param-required">Required</span></td>
-                <td>Function invoked with timestamp, source URL, reason, and action taken.</td>
-              </tr>
-            </tbody>
-          </table>
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">void</span>
+              <span class="returns-desc">Processes frames in-place and increments internal counters.</span>
+            </div>
 
-          <div class="try-bar">
-            <span>Live Interactive Execution</span>
-            <div>
-              <button class="btn-try" onclick="enableTry('card-listen')">Try it out</button>
-              <button class="btn-execute" id="exec-listen" onclick="executeListen()">Execute (Register Hook)</button>
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-scan')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-scan" onclick="executeScan()">Execute</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-scan">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-scan">1ms</span>
+              </div>
+              <div class="response-content" id="body-scan"></div>
             </div>
           </div>
+        </div>
 
-          <div class="response-box" id="resp-listen">
-            <div class="response-header">
-              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
-              <span id="time-listen">1ms</span>
+        <!-- Method: IframeShield.getStats() -->
+        <div class="method-card get" id="method-stats">
+          <div class="method-header" onclick="toggleCard('method-stats')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-get">GET</span>
+              <span class="method-signature">IframeShield.getStats()</span>
+              <span class="method-summary">Retrieve scan counts and security threat interception telemetry</span>
             </div>
-            <div class="response-body" id="body-listen"></div>
+            <span class="method-chevron">&#9660;</span>
+          </div>
+
+          <div class="method-body">
+            <div class="method-desc">
+              Returns the current execution counters and log of all blocked/sandboxed frames. No synthetic data &mdash; metrics are read directly from the live engine runtime.
+            </div>
+
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">ShieldStats</span>
+              <span class="returns-desc">Object containing { scanned, blocked, sandboxed, history }.</span>
+            </div>
+
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-stats')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-stats" onclick="executeGetStats()">Execute</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-stats">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-stats">1ms</span>
+              </div>
+              <div class="response-content" id="body-stats"></div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Schemas / Data Models -->
-    <div class="schema-section">
-      <div class="group-header">
-        <span>📦 Data Models & Schemas</span>
-      </div>
+        <!-- Method: IframeShield.allowDomain(domain) -->
+        <div class="method-card allow" id="method-allow">
+          <div class="method-header" onclick="toggleCard('method-allow')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-allow">ALLOW</span>
+              <span class="method-signature">IframeShield.allowDomain(domain)</span>
+              <span class="method-summary">Dynamically whitelist a trusted domain at runtime</span>
+            </div>
+            <span class="method-chevron">&#9660;</span>
+          </div>
 
-      <div class="schema-card" id="schema-options">
-        <div class="schema-header" onclick="toggleSchema('schema-options')">
-          <span>ShieldOptions</span>
-          <span>{...}</span>
+          <div class="method-body">
+            <div class="method-desc">
+              Adds a host string to the active trusted whitelist. Subsequent iframes loading from this domain will not be sandboxed.
+            </div>
+
+            <div class="sub-title">Parameters</div>
+            <div class="table-container">
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Requirement</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">domain</span></td>
+                    <td><span class="param-type">string</span></td>
+                    <td><span class="param-badge-req">Required</span></td>
+                    <td class="param-desc">Target domain string to permit (e.g. <code>'customer-portal.com'</code>).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">void</span>
+              <span class="returns-desc">Modifies the runtime whitelist in-memory.</span>
+            </div>
+
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-allow')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-allow" onclick="executeAllowDomain()">Execute (Allow 'custom-partner.com')</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-allow">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-allow">1ms</span>
+              </div>
+              <div class="response-content" id="body-allow"></div>
+            </div>
+          </div>
         </div>
-        <div class="schema-body">{
-  "action": "sandbox" | "remove" | "blank",
-  "sandboxFlags": "allow-scripts allow-same-origin",
-  "sandboxUntrusted": true,
-  "blockTrackingPixels": true,
-  "blockClickjackingOverlays": true,
-  "matchDimensions": false,
-  "trustedDomains": string[],
-  "adDomains": string[],
-  "onBlocked": (event, iframe) => void,
-  "debug": false
+
+        <!-- Method: IframeShield.blockDomain(domain) -->
+        <div class="method-card block" id="method-block">
+          <div class="method-header" onclick="toggleCard('method-block')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-block">BLOCK</span>
+              <span class="method-signature">IframeShield.blockDomain(domain)</span>
+              <span class="method-summary">Dynamically blacklist an untrusted ad domain at runtime</span>
+            </div>
+            <span class="method-chevron">&#9660;</span>
+          </div>
+
+          <div class="method-body">
+            <div class="method-desc">
+              Adds a domain to the active blacklist. Future iframes targeting this domain will immediately be intercepted and mitigated.
+            </div>
+
+            <div class="sub-title">Parameters</div>
+            <div class="table-container">
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Requirement</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">domain</span></td>
+                    <td><span class="param-type">string</span></td>
+                    <td><span class="param-badge-req">Required</span></td>
+                    <td class="param-desc">Target domain string to block (e.g. <code>'malicious-tracking.com'</code>).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">void</span>
+              <span class="returns-desc">Appends domain to active blacklist in-memory.</span>
+            </div>
+
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-block')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-block" onclick="executeBlockDomain()">Execute (Block 'malicious-ads.com')</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-block">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-block">1ms</span>
+              </div>
+              <div class="response-content" id="body-block"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Method: IframeShield.onBlocked(callback) -->
+        <div class="method-card hook" id="method-hook">
+          <div class="method-header" onclick="toggleCard('method-hook')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-hook">HOOK</span>
+              <span class="method-signature">IframeShield.onBlocked(callback)</span>
+              <span class="method-summary">Register an observability callback fired on every intercepted threat</span>
+            </div>
+            <span class="method-chevron">&#9660;</span>
+          </div>
+
+          <div class="method-body">
+            <div class="method-desc">
+              Registers an event hook invoked whenever an iframe is classified as an ad network, tracking pixel, clickjacking overlay, or untrusted source.
+            </div>
+
+            <div class="sub-title">Parameters</div>
+            <div class="table-container">
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Requirement</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">callback</span></td>
+                    <td><span class="param-type">(event: BlockEvent, iframe: Element) =&gt; void</span></td>
+                    <td><span class="param-badge-req">Required</span></td>
+                    <td class="param-desc">Callback receiving threat event telemetry and the associated DOM element.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">void</span>
+              <span class="returns-desc">Attaches the listener to the default engine instance.</span>
+            </div>
+
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-hook')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-hook" onclick="executeListen()">Execute (Register Hook)</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-hook">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-hook">1ms</span>
+              </div>
+              <div class="response-content" id="body-hook"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Method: IframeShield.generateCSP(customDomains) -->
+        <div class="method-card gen" id="method-csp">
+          <div class="method-header" onclick="toggleCard('method-csp')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-gen">GEN</span>
+              <span class="method-signature">IframeShield.generateCSP(customDomains)</span>
+              <span class="method-summary">Generate HTTP Content-Security-Policy & frame-ancestors directives</span>
+            </div>
+            <span class="method-chevron">&#9660;</span>
+          </div>
+
+          <div class="method-body">
+            <div class="method-desc">
+              Generates production-grade Content-Security-Policy headers restricting frame embedding to trusted sources and protecting against clickjacking overlays.
+            </div>
+
+            <div class="sub-title">Parameters</div>
+            <div class="table-container">
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Requirement</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">customDomains</span></td>
+                    <td><span class="param-type">string[]</span></td>
+                    <td><span class="param-badge-opt">Optional</span></td>
+                    <td class="param-desc">Array of partner domains to permit in the <code>frame-src</code> directive.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">string</span>
+              <span class="returns-desc">Complete Content-Security-Policy directive string.</span>
+            </div>
+
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-csp')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-csp" onclick="executeGenerateCSP()">Execute</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-csp">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-csp">2ms</span>
+              </div>
+              <div class="response-content" id="body-csp"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Method: IframeShield.destroy() -->
+        <div class="method-card stop" id="method-destroy">
+          <div class="method-header" onclick="toggleCard('method-destroy')">
+            <div class="method-identity">
+              <span class="method-badge badge-style-stop">STOP</span>
+              <span class="method-signature">IframeShield.destroy()</span>
+              <span class="method-summary">Disconnect observer and restore original browser DOM methods</span>
+            </div>
+            <span class="method-chevron">&#9660;</span>
+          </div>
+
+          <div class="method-body">
+            <div class="method-desc">
+              Gracefully shuts down the shield. Disconnects the MutationObserver and restores native <code>document.createElement</code>.
+            </div>
+
+            <div class="returns-box">
+              <span class="returns-label">Returns</span>
+              <span class="returns-type">void</span>
+              <span class="returns-desc">Restores the host environment cleanly.</span>
+            </div>
+
+            <div class="try-bar">
+              <div class="try-bar-label">
+                <span>Interactive Method Execution</span>
+              </div>
+              <div class="try-controls">
+                <button class="btn-action-sm" onclick="enableTry('method-destroy')">Try it out</button>
+                <button class="btn-action-sm btn-execute" id="exec-destroy" onclick="executeDestroy()">Execute</button>
+              </div>
+            </div>
+
+            <div class="response-container" id="resp-destroy">
+              <div class="response-header">
+                <div class="response-status-group">
+                  <span>RESPONSE:</span>
+                  <span class="status-code-tag">200 OK</span>
+                </div>
+                <span class="response-time" id="time-destroy">1ms</span>
+              </div>
+              <div class="response-content" id="body-destroy"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Integrations Section -->
+      <section class="docs-section" id="int-html">
+        <div class="section-header">
+          <h2>HTML / CDN Integration</h2>
+          <span class="section-eyebrow">INTEGRATIONS</span>
+        </div>
+        <div class="docs-prose">
+          <p>For static websites and traditional multi-page applications, include the UMD bundle in your HTML <code>&lt;head&gt;</code> before any third-party tags are injected.</p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>index.html</span>
+            <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code>&lt;head&gt;
+  &lt;script src=<span class="code-str">"https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"</span>&gt;&lt;/script&gt;
+  &lt;script&gt;
+    IframeShield.<span class="code-fn">init</span>({
+      action: <span class="code-str">'sandbox'</span>,
+      sandboxUntrusted: <span class="code-num">true</span>,
+      trustedDomains: [<span class="code-str">'js.stripe.com'</span>]
+    });
+  &lt;/script&gt;
+&lt;/head&gt;</code></pre>
+        </div>
+      </section>
+
+      <section class="docs-section" id="int-bundlers">
+        <div class="section-header">
+          <h2>npm & Modern Bundlers (Vite, Rollup, Webpack)</h2>
+          <span class="section-eyebrow">INTEGRATIONS</span>
+        </div>
+        <div class="docs-prose">
+          <p>Import and initialize the shield at the top of your application entry point before mounting your UI framework.</p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>src/main.ts</span>
+            <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'iframe-shield'</span>;
+
+IframeShield.<span class="code-fn">init</span>({
+  action: <span class="code-str">'sandbox'</span>,
+  sandboxUntrusted: <span class="code-num">true</span>,
+  blockTrackingPixels: <span class="code-num">true</span>,
+  blockClickjackingOverlays: <span class="code-num">true</span>
+});</code></pre>
+        </div>
+      </section>
+
+      <section class="docs-section" id="int-react">
+        <div class="section-header">
+          <h2>Next.js & React Applications</h2>
+          <span class="section-eyebrow">INTEGRATIONS</span>
+        </div>
+        <div class="docs-prose">
+          <p>In Next.js (App Router or Pages Router), mount the shield in a root layout client component or standard <code>useEffect</code> lifecycle hook.</p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>app/providers.tsx</span>
+            <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="code-str">'use client'</span>;
+
+<span class="code-kw">import</span> { useEffect } <span class="code-kw">from</span> <span class="code-str">'react'</span>;
+<span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'iframe-shield'</span>;
+
+<span class="code-kw">export function</span> <span class="code-fn">SecurityProvider</span>({ children }: { children: React.ReactNode }) {
+  useEffect(() =&gt; {
+    IframeShield.<span class="code-fn">init</span>({
+      action: <span class="code-str">'sandbox'</span>,
+      sandboxUntrusted: <span class="code-num">true</span>
+    });
+
+    <span class="code-kw">return</span> () =&gt; {
+      IframeShield.<span class="code-fn">destroy</span>();
+    };
+  }, []);
+
+  <span class="code-kw">return</span> &lt;&gt;{children}&lt;/&gt;;
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="docs-section" id="int-cloudflare">
+        <div class="section-header">
+          <h2>Cloudflare Edge Worker Integration</h2>
+          <span class="section-eyebrow">INTEGRATIONS</span>
+        </div>
+        <div class="docs-prose">
+          <p>
+            Combine client-side interception with edge-level Content Security Policies generated by <code>IframeShield.generateCSP()</code>.
+          </p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span>worker.js</span>
+            <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="code-kw">export default</span> {
+  <span class="code-kw">async</span> <span class="code-fn">fetch</span>(request, env) {
+    <span class="code-kw">const</span> response = <span class="code-kw">await</span> fetch(request);
+    <span class="code-kw">const</span> newHeaders = <span class="code-kw">new</span> Headers(response.headers);
+
+    <span class="code-com">// Enforce CSP frame restrictions at the network edge</span>
+    newHeaders.<span class="code-fn">set</span>(
+      <span class="code-str">'Content-Security-Policy'</span>,
+      <span class="code-str">"frame-ancestors 'self'; frame-src 'self' https://*.youtube.com https://*.stripe.com;"</span>
+    );
+
+    <span class="code-kw">return new</span> Response(response.body, {
+      status: response.status,
+      headers: newHeaders
+    });
+  }
+};</code></pre>
+        </div>
+      </section>
+
+      <!-- Schemas & Reference -->
+      <section class="docs-section" id="schemas">
+        <div class="section-header">
+          <h2>Data Models & Schemas</h2>
+          <span class="section-eyebrow">TYPESCRIPT TYPES</span>
+        </div>
+        <div class="docs-prose">
+          <p>Click each schema card to view full TypeScript interfaces and configuration structures.</p>
+        </div>
+
+        <div class="schema-card open" id="schema-options">
+          <div class="schema-header" onclick="toggleSchema('schema-options')">
+            <span>interface ShieldOptions</span>
+            <span>{...}</span>
+          </div>
+          <div class="schema-body">{
+  action?: 'sandbox' | 'remove' | 'blank';
+  sandboxFlags?: string;            // Default: 'allow-scripts allow-same-origin'
+  sandboxUntrusted?: boolean;        // Default: true
+  blockTrackingPixels?: boolean;     // Default: true
+  blockClickjackingOverlays?: boolean; // Default: true
+  matchDimensions?: boolean;         // Default: false
+  trustedDomains?: string[];         // e.g. ['youtube.com', 'stripe.com']
+  adDomains?: string[];              // e.g. ['doubleclick.net', 'popads.net']
+  onBlocked?: (event: BlockEvent, iframe: HTMLIFrameElement) => void;
+  debug?: boolean;
 }</div>
-      </div>
-
-      <div class="schema-card" id="schema-event">
-        <div class="schema-header" onclick="toggleSchema('schema-event')">
-          <span>BlockEvent</span>
-          <span>{...}</span>
         </div>
-        <div class="schema-body">{
-  "timestamp": 1729112400000,
-  "src": "https://adservice.google.com/pagead/ads",
-  "reason": "known_ad_network" | "hidden_tracking_iframe" | "clickjacking_transparent_overlay",
-  "matched": "adservice.google.com",
-  "action": "sandbox" | "remove" | "blank"
-}</div>
-      </div>
 
-      <div class="schema-card" id="schema-stats">
-        <div class="schema-header" onclick="toggleSchema('schema-stats')">
-          <span>ShieldStats</span>
-          <span>{...}</span>
-        </div>
-        <div class="schema-body">{
-  "scanned": 12,
-  "blocked": 4,
-  "sandboxed": 4,
-  "history": BlockEvent[]
+        <div class="schema-card" id="schema-event">
+          <div class="schema-header" onclick="toggleSchema('schema-event')">
+            <span>interface BlockEvent</span>
+            <span>{...}</span>
+          </div>
+          <div class="schema-body">{
+  timestamp: number;                 // Epoch milliseconds
+  src: string;                       // URL of intercepted frame
+  reason:
+    | 'known_ad_network'
+    | 'hidden_tracking_iframe'
+    | 'clickjacking_transparent_overlay'
+    | 'untrusted_third_party';
+  matched?: string;                  // Matched domain or dimension rule
+  action: 'sandbox' | 'remove' | 'blank';
 }</div>
-      </div>
-    </div>
+        </div>
+
+        <div class="schema-card" id="schema-stats">
+          <div class="schema-header" onclick="toggleSchema('schema-stats')">
+            <span>interface ShieldStats</span>
+            <span>{...}</span>
+          </div>
+          <div class="schema-body">{
+  scanned: number;                   // Total iframe elements inspected
+  blocked: number;                   // Hostile or tracking frames blocked
+  sandboxed: number;                 // Untrusted frames restricted
+  history: BlockEvent[];             // Chronological event log
+}</div>
+        </div>
+      </section>
+
+      <!-- Security FAQ -->
+      <section class="docs-section" id="faq">
+        <div class="section-header">
+          <h2>Security FAQ</h2>
+          <span class="section-eyebrow">REFERENCE</span>
+        </div>
+        <div class="docs-prose">
+          <p>
+            <strong>Does iframe-shield break legitimate payment gateways or video players?</strong><br>
+            No. Legitimate providers (YouTube, Vimeo, Stripe, PayPal, Google reCAPTCHA) are pre-whitelisted by default, and custom partners can be passed to <code>trustedDomains</code> or added via <code>IframeShield.allowDomain()</code>.
+          </p>
+          <p>
+            <strong>What is the browser performance impact?</strong><br>
+            Less than 1ms overhead per iframe creation. The MutationObserver uses native browser filtering and only executes the classification heuristic when nodes of type <code>IFRAME</code> are attached.
+          </p>
+          <p>
+            <strong>What if an ad script injects an iframe via document.write()?</strong><br>
+            The MutationObserver detects node insertions regardless of whether they originate from <code>document.write()</code>, <code>appendChild()</code>, or innerHTML changes, evaluating the frame before scripts inside can initialize.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Right Sticky Table of Contents -->
+    <aside class="docs-toc">
+      <div class="toc-title">On this page</div>
+      <ul class="toc-list">
+        <li><a href="#overview" class="toc-link">Specification</a></li>
+        <li><a href="#installation" class="toc-link">Installation</a></li>
+        <li><a href="#quick-start" class="toc-link">Quick Start</a></li>
+        <li><a href="#dom-boundary" class="toc-link">DOM Boundary</a></li>
+        <li><a href="#threat-detection" class="toc-link">Threat Heuristics</a></li>
+        <li><a href="#sandboxing" class="toc-link">Sandboxing</a></li>
+        <li><a href="#api-reference" class="toc-link">API Reference</a></li>
+        <li><a href="#int-html" class="toc-link">HTML / CDN</a></li>
+        <li><a href="#int-bundlers" class="toc-link">Vite / Bundlers</a></li>
+        <li><a href="#int-react" class="toc-link">Next.js / React</a></li>
+        <li><a href="#int-cloudflare" class="toc-link">Cloudflare Worker</a></li>
+        <li><a href="#schemas" class="toc-link">Data Models</a></li>
+        <li><a href="#faq" class="toc-link">Security FAQ</a></li>
+      </ul>
+    </aside>
   </div>
 
   <!-- Include bundle for live execution -->
@@ -885,13 +2018,21 @@
     }
   </script>
 
+  <!-- Interactive Documentation Runtime Scripts -->
   <script>
     function toggleCard(id) {
-      document.getElementById(id).classList.toggle('open');
+      const card = document.getElementById(id);
+      if (card) card.classList.toggle('open');
     }
 
     function toggleSchema(id) {
-      document.getElementById(id).classList.toggle('open');
+      const card = document.getElementById(id);
+      if (card) card.classList.toggle('open');
+    }
+
+    function toggleSidebarMenu() {
+      const sidebar = document.getElementById('docs-sidebar');
+      if (sidebar) sidebar.classList.toggle('mobile-open');
     }
 
     function enableTry(cardId) {
@@ -901,40 +2042,72 @@
       if (execBtn) execBtn.style.display = 'inline-block';
     }
 
-    function showResponse(cardId, data, duration = '2ms') {
-      const respBox = document.getElementById('resp-' + cardId);
-      const bodyBox = document.getElementById('body-' + cardId);
-      const timeBox = document.getElementById('time-' + cardId);
+    function showResponse(methodKey, data, duration) {
+      const respBox = document.getElementById('resp-' + methodKey);
+      const bodyBox = document.getElementById('body-' + methodKey);
+      const timeBox = document.getElementById('time-' + methodKey);
 
-      respBox.style.display = 'block';
-      timeBox.textContent = duration;
-      bodyBox.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+      if (respBox && bodyBox && timeBox) {
+        respBox.style.display = 'block';
+        timeBox.textContent = duration || '1ms';
+        bodyBox.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+      }
     }
 
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre code');
+      if (pre) {
+        navigator.clipboard.writeText(pre.innerText).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1800);
+        });
+      }
+    }
+
+    // Live Execution Handlers bound to real engine
     function executeInit() {
       const t0 = performance.now();
-      const instance = IframeShield.init({ action: 'sandbox', sandboxUntrusted: true });
-      const duration = Math.round(performance.now() - t0) + 'ms';
+      const instance = IframeShield.init({
+        action: 'sandbox',
+        sandboxUntrusted: true,
+        blockTrackingPixels: true,
+        blockClickjackingOverlays: true
+      });
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
       showResponse('init', {
         status: 'INITIALIZED',
         activeEngine: 'IframeShieldEngine',
-        mode: instance.options.action,
-        sandboxFlags: instance.options.sandboxFlags,
+        mode: instance && instance.options ? instance.options.action : 'sandbox',
+        sandboxFlags: instance && instance.options ? instance.options.sandboxFlags : 'allow-scripts allow-same-origin',
         timestamp: new Date().toISOString()
+      }, duration);
+    }
+
+    function executeScan() {
+      const t0 = performance.now();
+      IframeShield.scan();
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
+      const stats = IframeShield.getStats();
+      showResponse('scan', {
+        status: 'SWEEP_COMPLETED',
+        totalIframesMounted: stats.scanned,
+        threatsIdentified: stats.blocked,
+        executionTime: duration
       }, duration);
     }
 
     function executeGetStats() {
       const t0 = performance.now();
       const stats = IframeShield.getStats();
-      const duration = Math.round(performance.now() - t0) + 'ms';
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
       showResponse('stats', stats, duration);
     }
 
     function executeGenerateCSP() {
       const t0 = performance.now();
       const csp = IframeShield.generateCSP(['custom-embed-partner.com']);
-      const duration = Math.round(performance.now() - t0) + 'ms';
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
       showResponse('csp', {
         header: 'Content-Security-Policy',
         directives: csp
@@ -944,7 +2117,7 @@
     function executeDestroy() {
       const t0 = performance.now();
       IframeShield.destroy();
-      const duration = Math.round(performance.now() - t0) + 'ms';
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
       showResponse('destroy', {
         status: 'DISCONNECTED',
         restoredMethods: ['document.createElement', 'MutationObserver'],
@@ -955,11 +2128,22 @@
     function executeAllowDomain() {
       const t0 = performance.now();
       IframeShield.allowDomain('custom-partner.com');
-      const duration = Math.round(performance.now() - t0) + 'ms';
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
       showResponse('allow', {
         whitelistedDomain: 'custom-partner.com',
         status: 'ADDED_TO_WHITELIST',
         bypassSandbox: true
+      }, duration);
+    }
+
+    function executeBlockDomain() {
+      const t0 = performance.now();
+      IframeShield.blockDomain('malicious-ads.com');
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
+      showResponse('block', {
+        blacklistedDomain: 'malicious-ads.com',
+        status: 'ADDED_TO_BLACKLIST',
+        threatMitigation: 'ENFORCED'
       }, duration);
     }
 
@@ -968,11 +2152,11 @@
       IframeShield.onBlocked((event) => {
         console.log('[IframeShield Event]', event);
       });
-      const duration = Math.round(performance.now() - t0) + 'ms';
-      showResponse('listen', {
+      const duration = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
+      showResponse('hook', {
         listener: 'onBlocked',
         registered: true,
-        message: 'Active hook attached. Real-time events will log to console.'
+        message: 'Active hook attached. Real-time events will log to browser console.'
       }, duration);
     }
   </script>

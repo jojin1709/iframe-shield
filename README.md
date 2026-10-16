@@ -3,9 +3,11 @@
 
 <div align="center">
 
-# 🛡️ iframe-shield
+<img src="./assets/logo.png" alt="iframe-shield logo" width="140" style="border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 20px;" />
 
-### Autonomous, client-side iframe ad & popup blocker SDK for web applications.
+# iframe-shield
+
+### Autonomous, client-side iframe ad and popup blocker SDK for web applications.
 
 <p>
   <strong>Developed by <a href="https://github.com/jojin1709">JOJIN JOHN</a></strong>
@@ -88,7 +90,7 @@ Whether you run a video platform, content portal, blog, or embed third-party wid
 <details>
 <summary><strong>Why iframe-shield Exists</strong></summary>
 
-Many web applications rely on third-party widgets, syndication feeds, video players, or user-generated HTML. Often, these third-party scripts inject rogue iframes that deliver spam advertisements, open intrusive background tabs (`popunders`), or redirect users to scam landing pages.
+Many web applications rely on third-party widgets, syndication feeds, video players, or user-generated HTML. Often, these third-party scripts inject rogue iframes that deliver spam advertisements, open intrusive background tabs (popunders), or redirect users to scam landing pages.
 
 Browser ad-blocker extensions only protect the individual user who has them installed. **iframe-shield** shifts protection directly into the site itself: every single visitor gets clean, ad-free, and safe browsing without needing any browser extensions.
 
@@ -170,11 +172,11 @@ export default {
 
 ## Key Capabilities
 
-- **Pre-emptive Interception**: Wraps `document.createElement('iframe')` and `Node.prototype.appendChild` to neutralize malicious iframes *before* the browser issues network requests.
+- **Pre-emptive Interception**: Wraps `document.createElement('iframe')` and `Node.prototype.appendChild` to neutralize malicious iframes before the browser issues network requests.
 - **Dynamic Mutation Monitoring**: Uses an active `MutationObserver` to immediately process iframes injected via `innerHTML`, template literals, or dynamic Single Page App routing.
 - **Calibrated Whitelist**: Pre-configured to automatically pass trusted providers (YouTube, Vimeo, Twitch, Stripe, PayPal, reCAPTCHA, Cloudflare, Google Maps, Spotify, etc.).
 - **Built-in Ad Network Blacklist**: Targets known ad syndication domains (DoubleClick, PopAds, Adsterra, PropellerAds, Taboola, Outbrain, Criteo, RevContent, Exoclick, etc.).
-- **Tracking Pixel Neutralization**: Detects and suppresses hidden `1x1` and `0x0` tracking iframes.
+- **Tracking Pixel Neutralization**: Detects and suppresses hidden 1x1 and 0x0 tracking iframes.
 - **Safe Sandboxing (Default)**: Restricts untrusted frames with `sandbox="allow-scripts allow-same-origin"`, stripping `allow-top-navigation` and `allow-popups` to eliminate redirect hijacks and spam tabs.
 - **Comprehensive Observability**: Offers a real-time event hook (`onBlocked`) and telemetry counters (`getStats()`).
 - **Zero Dependencies**: Pure, lightweight vanilla JavaScript (< 4 KB gzipped).
@@ -216,6 +218,7 @@ Pass these options to `IframeShield.init(options)`:
 | `sandboxFlags` | `string` | `'allow-scripts allow-same-origin'` | Attributes assigned when sandboxing an ad or untrusted iframe. |
 | `sandboxUntrusted` | `boolean` | `true` | Apply safe sandbox attributes to any third-party iframe not in the whitelist. |
 | `blockTrackingPixels`| `boolean` | `true` | Neutralize 1x1 and 0x0 hidden tracking iframes. |
+| `blockClickjackingOverlays` | `boolean` | `true` | Detect transparent overlay iframes (opacity near 0 with high z-index). |
 | `matchDimensions` | `boolean` | `false` | Flag iframes matching standard IAB ad banner sizes (e.g. 300x250, 728x90). |
 | `trustedDomains` | `string[]` | `[]` | Additional custom domains to always allow. |
 | `adDomains` | `string[]` | `[]` | Additional custom ad domains to block. |
@@ -256,7 +259,8 @@ IframeShield.destroy();
 
 A complete interactive testing dashboard is hosted live on GitHub Pages:
 
-👉 **[Launch Live Demo Playground](https://jojin1709.github.io/iframe-shield/)**
+- **[Launch Live Demo Playground](https://jojin1709.github.io/iframe-shield/)**
+- **[Interactive Swagger API Docs](https://jojin1709.github.io/iframe-shield/docs/)**
 
 Alternatively, preview locally:
 1. Open [`demo/index.html`](file:///c:/Users/jojin/Downloads/iFrame-ad-blocker-master/iFrame-ad-blocker-master/demo/index.html) directly in your browser.
@@ -304,7 +308,7 @@ Yes. Because `iframe-shield` uses both monkey-patching of element creation metho
 
 ## Author & Credits
 
-**Developed by [JOJIN JOHN](https://github.com/)**
+**Developed by [JOJIN JOHN](https://github.com/jojin1709)**
 
 Contributions, bug reports, and suggestions are welcome!
 

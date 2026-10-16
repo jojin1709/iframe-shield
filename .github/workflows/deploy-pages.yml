@@ -34,11 +34,14 @@ jobs:
 
       - name: Prepare GitHub Pages Site Directory
         run: |
-          mkdir -p _site _site/docs
+          mkdir -p _site _site/docs _site/assets
           cp demo/index.html _site/index.html
+          cp demo/logo.png _site/logo.png
           cp dist/iframe-shield.min.js _site/iframe-shield.min.js
           cp docs/index.html _site/docs/index.html
+          cp docs/logo.png _site/docs/logo.png
           cp dist/iframe-shield.min.js _site/docs/iframe-shield.min.js
+          cp -r assets/* _site/assets/ 2>/dev/null || true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
