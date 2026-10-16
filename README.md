@@ -35,6 +35,7 @@ It intercepts DOM iframe creations before they execute, evaluates domains agains
 
 <p>
   <a href="#quick-start"><strong>Quick Start</strong></a> &bull;
+  <a href="https://jojin1709.github.io/iframe-shield/docs/"><strong>Swagger API Docs</strong></a> &bull;
   <a href="#key-capabilities"><strong>Key Capabilities</strong></a> &bull;
   <a href="#architecture"><strong>Architecture</strong></a> &bull;
   <a href="#configuration"><strong>Configuration</strong></a> &bull;

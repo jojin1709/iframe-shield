@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Official Swagger-style API Reference and Interactive Developer Documentation for iframe-shield SDK.">
+  <title>IframeShield API Documentation &mdash; Swagger Style</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --bg-surface: #111827;
+      --bg-subtle: #1f2937;
+      --border: rgba(255, 255, 255, 0.1);
+      --border-focus: #6366f1;
+      --text: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.1);
+      --green-border: rgba(16, 185, 129, 0.35);
+      --blue: #3b82f6;
+      --blue-bg: rgba(59, 130, 246, 0.1);
+      --blue-border: rgba(59, 130, 246, 0.35);
+      --orange: #f59e0b;
+      --orange-bg: rgba(245, 158, 11, 0.1);
+      --orange-border: rgba(245, 158, 11, 0.35);
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.1);
+      --red-border: rgba(239, 68, 68, 0.35);
+      --purple: #8b5cf6;
+      --purple-bg: rgba(139, 92, 246, 0.1);
+      --purple-border: rgba(139, 92, 246, 0.35);
+      --code-bg: #070a12;
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    /* Top Navigation */
+    header {
+      background: #0d1322;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .swagger-badge {
+      font-size: 0.72rem;
+      font-family: 'Fira Code', monospace;
+      font-weight: 700;
+      background: #49cc90;
+      color: #0b0f19;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-btn {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .nav-btn.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    /* Swagger Info Header */
+    .swagger-info {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .info-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .info-version {
+      font-size: 0.85rem;
+      font-family: 'Fira Code', monospace;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      color: #cbd5e1;
+    }
+
+    .info-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+      max-width: 800px;
+    }
+
+    .info-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .info-meta strong {
+      color: var(--text);
+    }
+    .info-meta a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .info-meta a:hover {
+      text-decoration: underline;
+    }
+
+    /* Server Bar */
+    .server-select-bar {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .server-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .server-pill {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      background: #090d1a;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 6px;
+      color: var(--green);
+    }
+
+    /* Method Group */
+    .endpoint-group {
+      margin-bottom: 32px;
+    }
+
+    .group-header {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Swagger Method Card */
+    .method-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .method-card.post { border-color: var(--green-border); }
+    .method-card.get { border-color: var(--blue-border); }
+    .method-card.put { border-color: var(--orange-border); }
+    .method-card.delete { border-color: var(--red-border); }
+    .method-card.listen { border-color: var(--purple-border); }
+
+    .method-header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+    }
+
+    .method-card.post .method-header { background: var(--green-bg); }
+    .method-card.get .method-header { background: var(--blue-bg); }
+    .method-card.put .method-header { background: var(--orange-bg); }
+    .method-card.delete .method-header { background: var(--red-bg); }
+    .method-card.listen .method-header { background: var(--purple-bg); }
+
+    .method-header:hover {
+      opacity: 0.9;
+    }
+
+    .method-identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .method-badge {
+      font-family: 'Fira Code', monospace;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 6px;
+      color: #fff;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .post .method-badge { background: var(--green); }
+    .get .method-badge { background: var(--blue); }
+    .put .method-badge { background: var(--orange); }
+    .delete .method-badge { background: var(--red); }
+    .listen .method-badge { background: var(--purple); }
+
+    .method-path {
+      font-family: 'Fira Code', monospace;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .method-summary {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .chevron {
+      font-size: 0.85rem;
+      transition: transform 0.25s ease;
+      color: var(--text-muted);
+    }
+    .method-card.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Method Body / Expandable Content */
+    .method-body {
+      display: none;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      background: #090e1c;
+    }
+    .method-card.open .method-body {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    /* Parameters Table */
+    .params-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+    }
+    .params-table th, .params-table td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .params-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+    .param-name {
+      font-family: 'Fira Code', monospace;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .param-type {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      color: var(--primary);
+    }
+    .param-required {
+      color: var(--red);
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    /* Try It Out Bar */
+    .try-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+    }
+    .btn-try {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .btn-try:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-execute {
+      background: var(--green);
+      border: none;
+      color: #0b0f19;
+      font-weight: 800;
+      padding: 8px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      display: none;
+      transition: opacity 0.2s ease;
+    }
+    .btn-execute:hover {
+      opacity: 0.9;
+    }
+
+    /* Response Box */
+    .response-box {
+      display: none;
+      margin-top: 20px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .response-header {
+      background: #0f1629;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-family: 'Fira Code', monospace;
+      border-bottom: 1px solid var(--border);
+    }
+    .status-badge {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid var(--green-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .response-body {
+      padding: 16px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      max-height: 240px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Schemas Accordion */
+    .schema-section {
+      margin-top: 48px;
+    }
+    .schema-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .schema-header {
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: 'Fira Code', monospace;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .schema-body {
+      display: none;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      background: #070a12;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+    .schema-card.open .schema-body {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="../demo/index.html" class="brand">
+      <div class="brand-icon">&#x1F6E1;</div>
+      <div>
+        <div class="brand-title">IframeShield Docs</div>
+      </div>
+      <span class="swagger-badge">SWAGGER / API</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="../demo/index.html" class="nav-btn primary">&#x1F9EA; Live Playground</a>
+      <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener" class="nav-btn">GitHub Repo</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Swagger Info Card -->
+    <div class="swagger-info">
+      <div class="info-title">
+        <span>iframe-shield API Spec</span>
+        <span class="info-version">v1.0.0</span>
+      </div>
+      <p class="info-desc">
+        Comprehensive interactive developer specification for the <code>iframe-shield</code> SDK. Use this reference to inspect and test all client-side engine methods, security event listeners, dynamic whitelisting APIs, and Cloudflare Edge worker directives.
+      </p>
+      <div class="info-meta">
+        <div>Developer: <strong>JOJIN JOHN</strong></div>
+        <div>License: <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a></div>
+        <div>Repository: <a href="https://github.com/jojin1709/iframe-shield" target="_blank">jojin1709/iframe-shield</a></div>
+        <div>CDN: <code>https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js</code></div>
+      </div>
+    </div>
+
+    <!-- Base Server Bar -->
+    <div class="server-select-bar">
+      <span class="server-label">Active Engine Environment:</span>
+      <span class="server-pill">Browser DOM &bull; window.IframeShield (Embedded Sandbox)</span>
+    </div>
+
+    <!-- Endpoints Group 1: Core Engine -->
+    <div class="endpoint-group">
+      <div class="group-header">
+        <span>⚙️ Core Shield Engine</span>
+      </div>
+
+      <!-- IframeShield.init(options) -->
+      <div class="method-card post" id="card-init">
+        <div class="method-header" onclick="toggleCard('card-init')">
+          <div class="method-identity">
+            <span class="method-badge">INIT</span>
+            <span class="method-path">IframeShield.init(options)</span>
+            <span class="method-summary">Initialize the shield and start pre-emptive DOM interception</span>
+          </div>
+          <span class="chevron">&#9660;</span>
+        </div>
+
+        <div class="method-body">
+          <div class="section-title">Parameters</div>
+          <table class="params-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">options.action</span></td>
+                <td><span class="param-type">string</span></td>
+                <td>Optional (default: <code>'sandbox'</code>)</td>
+                <td>Mitigation action: <code>'sandbox'</code> | <code>'remove'</code> | <code>'blank'</code>.</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">options.sandboxUntrusted</span></td>
+                <td><span class="param-type">boolean</span></td>
+                <td>Optional (default: <code>true</code>)</td>
+                <td>Automatically sandboxes third-party frames not in the trusted whitelist.</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">options.blockTrackingPixels</span></td>
+                <td><span class="param-type">boolean</span></td>
+                <td>Optional (default: <code>true</code>)</td>
+                <td>Neutralizes hidden 1x1 or 0x0 surveillance tracking frames.</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">options.trustedDomains</span></td>
+                <td><span class="param-type">string[]</span></td>
+                <td>Optional</td>
+                <td>Array of custom domain strings to always permit (e.g. <code>['partner.com']</code>).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="try-bar">
+            <span>Live Interactive Execution</span>
+            <div>
+              <button class="btn-try" onclick="enableTry('card-init')">Try it out</button>
+              <button class="btn-execute" id="exec-init" onclick="executeInit()">Execute</button>
+            </div>
+          </div>
+
+          <div class="response-box" id="resp-init">
+            <div class="response-header">
+              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
+              <span id="time-init">3ms</span>
+            </div>
+            <div class="response-body" id="body-init"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IframeShield.getStats() -->
+      <div class="method-card get" id="card-stats">
+        <div class="method-header" onclick="toggleCard('card-stats')">
+          <div class="method-identity">
+            <span class="method-badge">GET</span>
+            <span class="method-path">IframeShield.getStats()</span>
+            <span class="method-summary">Retrieve current scan counters and threat interception telemetry</span>
+          </div>
+          <span class="chevron">&#9660;</span>
+        </div>
+
+        <div class="method-body">
+          <div class="section-title">Parameters</div>
+          <p style="color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px;">No parameters required for telemetry retrieval.</p>
+
+          <div class="try-bar">
+            <span>Live Interactive Execution</span>
+            <div>
+              <button class="btn-try" onclick="enableTry('card-stats')">Try it out</button>
+              <button class="btn-execute" id="exec-stats" onclick="executeGetStats()">Execute</button>
+            </div>
+          </div>
+
+          <div class="response-box" id="resp-stats">
+            <div class="response-header">
+              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
+              <span id="time-stats">1ms</span>
+            </div>
+            <div class="response-body" id="body-stats"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IframeShield.generateCSP() -->
+      <div class="method-card get" id="card-csp">
+        <div class="method-header" onclick="toggleCard('card-csp')">
+          <div class="method-identity">
+            <span class="method-badge">GEN</span>
+            <span class="method-path">IframeShield.generateCSP(customDomains)</span>
+            <span class="method-summary">Generate HTTP Content-Security-Policy & frame-ancestors directives</span>
+          </div>
+          <span class="chevron">&#9660;</span>
+        </div>
+
+        <div class="method-body">
+          <div class="section-title">Parameters</div>
+          <table class="params-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">customDomains</span></td>
+                <td><span class="param-type">string[]</span></td>
+                <td>Optional</td>
+                <td>Additional partner domains to include in the generated <code>frame-src</code> header.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="try-bar">
+            <span>Live Interactive Execution</span>
+            <div>
+              <button class="btn-try" onclick="enableTry('card-csp')">Try it out</button>
+              <button class="btn-execute" id="exec-csp" onclick="executeGenerateCSP()">Execute</button>
+            </div>
+          </div>
+
+          <div class="response-box" id="resp-csp">
+            <div class="response-header">
+              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
+              <span id="time-csp">2ms</span>
+            </div>
+            <div class="response-body" id="body-csp"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IframeShield.destroy() -->
+      <div class="method-card delete" id="card-destroy">
+        <div class="method-header" onclick="toggleCard('card-destroy')">
+          <div class="method-identity">
+            <span class="method-badge">STOP</span>
+            <span class="method-path">IframeShield.destroy()</span>
+            <span class="method-summary">Disconnect observer and restore original browser DOM methods</span>
+          </div>
+          <span class="chevron">&#9660;</span>
+        </div>
+
+        <div class="method-body">
+          <div class="section-title">Parameters</div>
+          <p style="color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px;">Restores <code>document.createElement</code> and disconnects active <code>MutationObserver</code>.</p>
+
+          <div class="try-bar">
+            <span>Live Interactive Execution</span>
+            <div>
+              <button class="btn-try" onclick="enableTry('card-destroy')">Try it out</button>
+              <button class="btn-execute" id="exec-destroy" onclick="executeDestroy()">Execute</button>
+            </div>
+          </div>
+
+          <div class="response-box" id="resp-destroy">
+            <div class="response-header">
+              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
+              <span id="time-destroy">1ms</span>
+            </div>
+            <div class="response-body" id="body-destroy"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endpoints Group 2: Whitelisting & Events -->
+    <div class="endpoint-group">
+      <div class="group-header">
+        <span>🛡️ Dynamic Whitelist & Callbacks</span>
+      </div>
+
+      <!-- IframeShield.allowDomain(domain) -->
+      <div class="method-card put" id="card-allow">
+        <div class="method-header" onclick="toggleCard('card-allow')">
+          <div class="method-identity">
+            <span class="method-badge">ALLOW</span>
+            <span class="method-path">IframeShield.allowDomain(domain)</span>
+            <span class="method-summary">Dynamically whitelist a trusted embed host at runtime</span>
+          </div>
+          <span class="chevron">&#9660;</span>
+        </div>
+
+        <div class="method-body">
+          <div class="section-title">Parameters</div>
+          <table class="params-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">domain</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><span class="param-required">Required</span></td>
+                <td>Target domain string to permit (e.g. <code>'my-payment-gateway.com'</code>).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="try-bar">
+            <span>Live Interactive Execution</span>
+            <div>
+              <button class="btn-try" onclick="enableTry('card-allow')">Try it out</button>
+              <button class="btn-execute" id="exec-allow" onclick="executeAllowDomain()">Execute (Allow 'custom-partner.com')</button>
+            </div>
+          </div>
+
+          <div class="response-box" id="resp-allow">
+            <div class="response-header">
+              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
+              <span id="time-allow">1ms</span>
+            </div>
+            <div class="response-body" id="body-allow"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IframeShield.onBlocked(callback) -->
+      <div class="method-card listen" id="card-listen">
+        <div class="method-header" onclick="toggleCard('card-listen')">
+          <div class="method-identity">
+            <span class="method-badge">HOOK</span>
+            <span class="method-path">IframeShield.onBlocked(callback)</span>
+            <span class="method-summary">Register an observability callback fired on every intercepted threat</span>
+          </div>
+          <span class="chevron">&#9660;</span>
+        </div>
+
+        <div class="method-body">
+          <div class="section-title">Parameters</div>
+          <table class="params-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">callback</span></td>
+                <td><span class="param-type">(event: BlockEvent, iframe: Element) =&gt; void</span></td>
+                <td><span class="param-required">Required</span></td>
+                <td>Function invoked with timestamp, source URL, reason, and action taken.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="try-bar">
+            <span>Live Interactive Execution</span>
+            <div>
+              <button class="btn-try" onclick="enableTry('card-listen')">Try it out</button>
+              <button class="btn-execute" id="exec-listen" onclick="executeListen()">Execute (Register Hook)</button>
+            </div>
+          </div>
+
+          <div class="response-box" id="resp-listen">
+            <div class="response-header">
+              <span>RESPONSE CODE: <strong class="status-badge">200 OK</strong></span>
+              <span id="time-listen">1ms</span>
+            </div>
+            <div class="response-body" id="body-listen"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schemas / Data Models -->
+    <div class="schema-section">
+      <div class="group-header">
+        <span>📦 Data Models & Schemas</span>
+      </div>
+
+      <div class="schema-card" id="schema-options">
+        <div class="schema-header" onclick="toggleSchema('schema-options')">
+          <span>ShieldOptions</span>
+          <span>{...}</span>
+        </div>
+        <div class="schema-body">{
+  "action": "sandbox" | "remove" | "blank",
+  "sandboxFlags": "allow-scripts allow-same-origin",
+  "sandboxUntrusted": true,
+  "blockTrackingPixels": true,
+  "blockClickjackingOverlays": true,
+  "matchDimensions": false,
+  "trustedDomains": string[],
+  "adDomains": string[],
+  "onBlocked": (event, iframe) => void,
+  "debug": false
+}</div>
+      </div>
+
+      <div class="schema-card" id="schema-event">
+        <div class="schema-header" onclick="toggleSchema('schema-event')">
+          <span>BlockEvent</span>
+          <span>{...}</span>
+        </div>
+        <div class="schema-body">{
+  "timestamp": 1729112400000,
+  "src": "https://adservice.google.com/pagead/ads",
+  "reason": "known_ad_network" | "hidden_tracking_iframe" | "clickjacking_transparent_overlay",
+  "matched": "adservice.google.com",
+  "action": "sandbox" | "remove" | "blank"
+}</div>
+      </div>
+
+      <div class="schema-card" id="schema-stats">
+        <div class="schema-header" onclick="toggleSchema('schema-stats')">
+          <span>ShieldStats</span>
+          <span>{...}</span>
+        </div>
+        <div class="schema-body">{
+  "scanned": 12,
+  "blocked": 4,
+  "sandboxed": 4,
+  "history": BlockEvent[]
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include bundle for live execution -->
+  <script src="../dist/iframe-shield.min.js"></script>
+  <script>
+    if (typeof IframeShield === 'undefined') {
+      document.write('<script src="iframe-shield.min.js"><\/script>');
+    }
+  </script>
+
+  <script>
+    function toggleCard(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    function toggleSchema(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    function enableTry(cardId) {
+      const card = document.getElementById(cardId);
+      if (!card.classList.contains('open')) card.classList.add('open');
+      const execBtn = card.querySelector('.btn-execute');
+      if (execBtn) execBtn.style.display = 'inline-block';
+    }
+
+    function showResponse(cardId, data, duration = '2ms') {
+      const respBox = document.getElementById('resp-' + cardId);
+      const bodyBox = document.getElementById('body-' + cardId);
+      const timeBox = document.getElementById('time-' + cardId);
+
+      respBox.style.display = 'block';
+      timeBox.textContent = duration;
+      bodyBox.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+    }
+
+    function executeInit() {
+      const t0 = performance.now();
+      const instance = IframeShield.init({ action: 'sandbox', sandboxUntrusted: true });
+      const duration = Math.round(performance.now() - t0) + 'ms';
+      showResponse('init', {
+        status: 'INITIALIZED',
+        activeEngine: 'IframeShieldEngine',
+        mode: instance.options.action,
+        sandboxFlags: instance.options.sandboxFlags,
+        timestamp: new Date().toISOString()
+      }, duration);
+    }
+
+    function executeGetStats() {
+      const t0 = performance.now();
+      const stats = IframeShield.getStats();
+      const duration = Math.round(performance.now() - t0) + 'ms';
+      showResponse('stats', stats, duration);
+    }
+
+    function executeGenerateCSP() {
+      const t0 = performance.now();
+      const csp = IframeShield.generateCSP(['custom-embed-partner.com']);
+      const duration = Math.round(performance.now() - t0) + 'ms';
+      showResponse('csp', {
+        header: 'Content-Security-Policy',
+        directives: csp
+      }, duration);
+    }
+
+    function executeDestroy() {
+      const t0 = performance.now();
+      IframeShield.destroy();
+      const duration = Math.round(performance.now() - t0) + 'ms';
+      showResponse('destroy', {
+        status: 'DISCONNECTED',
+        restoredMethods: ['document.createElement', 'MutationObserver'],
+        message: 'Engine stopped cleanly.'
+      }, duration);
+    }
+
+    function executeAllowDomain() {
+      const t0 = performance.now();
+      IframeShield.allowDomain('custom-partner.com');
+      const duration = Math.round(performance.now() - t0) + 'ms';
+      showResponse('allow', {
+        whitelistedDomain: 'custom-partner.com',
+        status: 'ADDED_TO_WHITELIST',
+        bypassSandbox: true
+      }, duration);
+    }
+
+    function executeListen() {
+      const t0 = performance.now();
+      IframeShield.onBlocked((event) => {
+        console.log('[IframeShield Event]', event);
+      });
+      const duration = Math.round(performance.now() - t0) + 'ms';
+      showResponse('listen', {
+        listener: 'onBlocked',
+        registered: true,
+        message: 'Active hook attached. Real-time events will log to console.'
+      }, duration);
+    }
+  </script>
+</body>
+</html>
