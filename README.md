@@ -253,10 +253,12 @@ IframeShield.destroy();
 
 ## Interactive Playground
 
-A complete interactive testing dashboard is included in [`demo/index.html`](file:///c:/Users/jojin/Downloads/iFrame-ad-blocker-master/iFrame-ad-blocker-master/demo/index.html).
+A complete interactive testing dashboard is hosted live on GitHub Pages:
 
-To preview:
-1. Open [`demo/index.html`](file:///c:/Users/jojin/Downloads/iFrame-ad-blocker-master/iFrame-ad-blocker-master/demo/index.html) in your browser.
+👉 **[Launch Live Demo Playground](https://jojin1709.github.io/iframe-shield/)**
+
+Alternatively, preview locally:
+1. Open [`demo/index.html`](file:///c:/Users/jojin/Downloads/iFrame-ad-blocker-master/iFrame-ad-blocker-master/demo/index.html) directly in your browser.
 2. Click injection buttons to simulate real-time ad network attacks (DoubleClick, PopAds, Tracking Pixels) vs. trusted embeds (YouTube, Stripe).
 3. Observe live counter updates and the real-time event log feed.
 

@@ -543,8 +543,13 @@
     </div>
   </div>
 
-  <!-- Include our compiled browser bundle -->
+  <!-- Include our compiled browser bundle (local or GitHub Pages) -->
   <script src="../dist/iframe-shield.min.js"></script>
+  <script>
+    if (typeof IframeShield === 'undefined') {
+      document.write('<script src="iframe-shield.min.js"><\/script>');
+    }
+  </script>
 
   <script>
     // Configure IframeShield with UI listener
