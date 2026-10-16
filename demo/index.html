@@ -928,6 +928,11 @@
             <div class="btn-action-label">&#x26D4; Clickjacking Overlay</div>
             <div class="btn-action-sub">opacity: 0 + high z-index</div>
           </button>
+
+          <button class="btn-action btn-threat" id="btnInjectPopupHijack">
+            <div class="btn-action-label">&#x26D4; Popup & Redirect Attack</div>
+            <div class="btn-action-sub">window.open() / top-nav hijack</div>
+          </button>
         </div>
 
         <!-- Trusted Providers -->
@@ -1183,6 +1188,23 @@
 
     document.getElementById('btnInjectClickjacking').addEventListener('click', () => {
       injectIframe('https://malicious-tracker.net/overlay', 340, 180, true);
+    });
+
+    document.getElementById('btnInjectPopupHijack').addEventListener('click', () => {
+      const payload = 'data:text/html;charset=utf-8,' + encodeURIComponent(
+        '<!DOCTYPE html><html><body style="font-family:sans-serif;padding:20px;background:#1e1b4b;color:#fff;text-align:center;">' +
+        '<h4 style="color:#f43f5e;margin-bottom:8px;">🚨 Rogue Ad Script Executing</h4>' +
+        '<p style="font-size:12px;opacity:0.8;">Attempting window.open() & top.location redirect...</p>' +
+        '<script>' +
+        'try {' +
+        '  var w = window.open("https://rogue-ad-network.net", "_blank");' +
+        '  if (!w) document.body.innerHTML += "<p style=\'color:#10b981;font-weight:bold;margin-top:10px;\'>🛡️ POPUP BLOCKED BY SANDBOX!</p>";' +
+        '} catch(e) {' +
+        '  document.body.innerHTML += "<p style=\'color:#10b981;font-weight:bold;margin-top:10px;\'>🛡️ HIJACK BLOCKED BY SANDBOX!</p>";' +
+        '}' +
+        '<\/script></body></html>'
+      );
+      injectIframe(payload, 340, 180);
     });
 
     document.getElementById('btnInjectYouTube').addEventListener('click', () => {
