@@ -1,0 +1,45 @@
+{
+  "name": "iframe-shield",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Developer library to protect web applications from rogue iframe ads, popups, and clickjacking.",
+  "main": "dist/iframe-shield.cjs.js",
+  "module": "dist/iframe-shield.esm.js",
+  "browser": "dist/iframe-shield.min.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test": "node test/test.js",
+    "build": "node scripts/build.js",
+    "dev:cf": "npx wrangler dev",
+    "deploy:cf": "npx wrangler deploy",
+    "prepublishOnly": "npm test && npm run build"
+  },
+  "files": [
+    "dist",
+    "types",
+    "src",
+    "integrations",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "adblocker",
+    "iframe",
+    "iframe-ad-blocker",
+    "security",
+    "sandbox",
+    "ad-shield",
+    "anti-redirect",
+    "embed-protection"
+  ],
+  "author": "JOJIN JOHN",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jojin1709/iframe-shield.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jojin1709/iframe-shield/issues"
+  },
+  "homepage": "https://github.com/jojin1709/iframe-shield#readme"
+}

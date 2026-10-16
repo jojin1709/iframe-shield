@@ -1,0 +1,662 @@
+/**
+ * iframe-shield v1.0.0 (ES Module)
+ * Developed by JOJIN JOHN
+ * (c) 2026 MIT License
+ */
+
+/**
+ * Default rules and patterns for iframe ad detection and whitelisting
+ */
+
+const DEFAULT_TRUSTED_DOMAINS = [
+  // Video & Audio Embeds
+  'youtube.com',
+  'youtube-nocookie.com',
+  'youtu.be',
+  'player.vimeo.com',
+  'vimeo.com',
+  'twitch.tv',
+  'player.twitch.tv',
+  'spotify.com',
+  'soundcloud.com',
+  'dailymotion.com',
+
+  // Payment & Security Providers
+  'js.stripe.com',
+  'hooks.stripe.com',
+  'checkout.stripe.com',
+  'paypal.com',
+  'sandbox.paypal.com',
+  'google.com/recaptcha',
+  'recaptcha.net',
+  'challenges.cloudflare.com',
+  'hcaptcha.com',
+
+  // Maps & Forms & Common Tools
+  'maps.google.com',
+  'google.com/maps',
+  'docs.google.com',
+  'typeform.com',
+  'codepen.io',
+  'codesandbox.io',
+  'figma.com'
+];
+
+const DEFAULT_AD_DOMAINS = [
+  // Common Ad Networks & Exchanges
+  'doubleclick.net',
+  'googlesyndication.com',
+  'googleadservices.com',
+  'adservice.google.com',
+  'adnxs.com',
+  'rubiconproject.com',
+  'criteo.com',
+  'criteo.net',
+  'openx.net',
+  'pubmatic.com',
+  'taboola.com',
+  'outbrain.com',
+  'popads.net',
+  'popcash.net',
+  'propellerads.com',
+  'adsterra.com',
+  'exoclick.com',
+  'juicyads.com',
+  'trafficjunky.com',
+  'revcontent.com',
+  'media.net',
+  'yieldmo.com',
+  'smartadserver.com',
+  'adform.net',
+  'amazon-adsystem.com',
+  'adroll.com',
+  'infolinks.com',
+  'bidvertiser.com',
+  'mgid.com',
+  'zergnet.com'
+];
+
+const AD_URL_PATTERNS = [
+  /\/ads?\//i,
+  /\/adserver\//i,
+  /\/banner\//i,
+  /\/popunder/i,
+  /\/interstitial/i,
+  /[?&#]ad_type=/i,
+  /[?&#]clicktag=/i,
+  /[?&#]advertiser=/i,
+  /\/affiliate_frame/i,
+  /\/sponsor_frame/i
+];
+
+const AD_DIMENSIONS = [
+  { width: 300, height: 250 }, // Medium Rectangle
+  { width: 728, height: 90 },  // Leaderboard
+  { width: 160, height: 600 }, // Wide Skyscraper
+  { width: 300, height: 600 }, // Half Page
+  { width: 320, height: 50 },  // Mobile Leaderboard
+  { width: 320, height: 100 }, // Large Mobile Banner
+  { width: 468, height: 60 },  // Banner
+  { width: 120, height: 600 }, // Skyscraper
+  { width: 970, height: 90 },  // Large Leaderboard
+  { width: 970, height: 250 }  // Billboard
+];
+
+
+
+/**
+ * Normalizes and extracts hostname/path info from a URL string or iframe
+ */
+function parseUrl(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== 'string') return null;
+  const trimmed = rawUrl.trim();
+  if (!trimmed || trimmed === 'about:blank' || trimmed.startsWith('javascript:')) {
+    return { isSpecial: true, url: trimmed };
+  }
+
+  try {
+    // Handle protocol-relative URLs
+    const fullUrl = trimmed.startsWith('//') ? window.location.protocol + trimmed : trimmed;
+    const parsed = new URL(fullUrl, window.location.href);
+    return {
+      hostname: parsed.hostname.toLowerCase(),
+      pathname: parsed.pathname.toLowerCase(),
+      href: parsed.href,
+      fullUrl: fullUrl
+    };
+  } catch {
+    return { hostname: '', pathname: '', href: rawUrl, fullUrl: rawUrl };
+  }
+}
+
+/**
+ * Checks if a hostname matches a list of domain patterns (supports subdomains)
+ */
+function matchesDomainList(hostname, domainList) {
+  if (!hostname || !Array.isArray(domainList)) return false;
+  const cleanHost = hostname.toLowerCase();
+
+  return domainList.some(domain => {
+    const cleanDomain = domain.toLowerCase();
+    // Check if domain includes path like "google.com/recaptcha"
+    if (cleanDomain.includes('/')) {
+      return false; // Handled separately if needed
+    }
+    return cleanHost === cleanDomain || cleanHost.endsWith('.' + cleanDomain);
+  });
+}
+
+/**
+ * Checks if an iframe matches standard IAB advertisement dimensions
+ */
+function matchesAdDimensions(iframe) {
+  if (!iframe) return false;
+  
+  const widthAttr = parseInt(iframe.getAttribute('width') || iframe.style.width || iframe.offsetWidth, 10);
+  const heightAttr = parseInt(iframe.getAttribute('height') || iframe.style.height || iframe.offsetHeight, 10);
+
+  if (isNaN(widthAttr) || isNaN(heightAttr)) return false;
+
+  return AD_DIMENSIONS.some(dim => dim.width === widthAttr && dim.height === heightAttr);
+}
+
+/**
+ * Checks if an iframe appears to be a zero-pixel or hidden tracking frame
+ */
+function isHiddenTrackingFrame(iframe) {
+  if (!iframe) return false;
+  const w = parseInt(iframe.getAttribute('width') || iframe.style.width, 10);
+  const h = parseInt(iframe.getAttribute('height') || iframe.style.height, 10);
+
+  if ((w === 0 || w === 1) && (h === 0 || h === 1)) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Checks if an iframe appears to be a clickjacking transparent overlay
+ */
+function isClickjackingOverlay(iframe) {
+  if (!iframe || !iframe.style) return false;
+  const style = iframe.style;
+  const opacity = parseFloat(style.opacity || iframe.getAttribute('opacity'));
+  const zIndex = parseInt(style.zIndex, 10);
+  const position = style.position;
+
+  // Transparent iframe placed on top of content
+  if (!isNaN(opacity) && opacity <= 0.05 && !isNaN(zIndex) && zIndex >= 100) {
+    return true;
+  }
+  if ((position === 'fixed' || position === 'absolute') && opacity === 0) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Checks if an iframe uses srcdoc to deliver known ad scripts
+ */
+function matchesSrcDocAd(iframe, adDomains, adPatterns) {
+  if (!iframe) return null;
+  const srcdoc = iframe.getAttribute('srcdoc') || iframe.srcdoc;
+  if (!srcdoc || typeof srcdoc !== 'string') return null;
+
+  const lower = srcdoc.toLowerCase();
+  for (const domain of adDomains) {
+    if (lower.includes(domain.toLowerCase())) {
+      return { matched: domain, reason: 'srcdoc_ad_script' };
+    }
+  }
+  for (const pattern of adPatterns) {
+    if (pattern.test(srcdoc)) {
+      return { matched: pattern.toString(), reason: 'srcdoc_ad_pattern' };
+    }
+  }
+  return null;
+}
+
+/**
+ * Classifies an iframe element against configured rules
+ */
+function classifyIframe(iframe, options = {}) {
+  const trustedDomains = [...DEFAULT_TRUSTED_DOMAINS, ...(options.trustedDomains || [])];
+  const adDomains = [...DEFAULT_AD_DOMAINS, ...(options.adDomains || [])];
+  const customPatterns = options.adPatterns || [];
+  const allPatterns = [...AD_URL_PATTERNS, ...customPatterns];
+
+  // 0. Check for clickjacking transparent overlay
+  if (options.blockClickjackingOverlays !== false && isClickjackingOverlay(iframe)) {
+    return { isBlocked: true, isTrusted: false, reason: 'clickjacking_transparent_overlay' };
+  }
+
+  // 0b. Check for srcdoc injected ad script
+  const srcDocAd = matchesSrcDocAd(iframe, adDomains, allPatterns);
+  if (srcDocAd) {
+    return { isBlocked: true, isTrusted: false, reason: srcDocAd.reason, matched: srcDocAd.matched };
+  }
+
+  const src = iframe.getAttribute('src') || iframe.src || iframe.dataset.src || '';
+  const parsed = parseUrl(src);
+
+  // If no source is set yet, it might be populated later
+  if (!parsed) {
+    return { isBlocked: false, isTrusted: false, reason: null };
+  }
+
+  // Same-origin check
+  if (parsed.hostname && window.location.hostname && parsed.hostname === window.location.hostname.toLowerCase()) {
+    return { isBlocked: false, isTrusted: true, reason: 'same_origin' };
+  }
+
+  // 1. Check if domain is trusted (YouTube, Stripe, reCAPTCHA, etc.)
+  if (parsed.hostname && matchesDomainList(parsed.hostname, trustedDomains)) {
+    return { isBlocked: false, isTrusted: true, reason: 'trusted_domain' };
+  }
+
+  // Check trusted domain with path (e.g., google.com/recaptcha)
+  if (parsed.href) {
+    const isTrustedPath = trustedDomains.some(t => t.includes('/') && parsed.href.toLowerCase().includes(t.toLowerCase()));
+    if (isTrustedPath) {
+      return { isBlocked: false, isTrusted: true, reason: 'trusted_path' };
+    }
+  }
+
+  // 2. Check if domain matches known ad networks
+  if (parsed.hostname && matchesDomainList(parsed.hostname, adDomains)) {
+    return { isBlocked: true, isTrusted: false, reason: 'known_ad_network', matched: parsed.hostname };
+  }
+
+  // 3. Check if URL matches ad patterns
+  if (parsed.fullUrl) {
+    for (const pattern of allPatterns) {
+      if (pattern.test(parsed.fullUrl)) {
+        return { isBlocked: true, isTrusted: false, reason: 'ad_url_pattern', matched: pattern.toString() };
+      }
+    }
+  }
+
+  // 4. Check for hidden 0-pixel tracking iframe
+  if (options.blockTrackingPixels !== false && isHiddenTrackingFrame(iframe)) {
+    return { isBlocked: true, isTrusted: false, reason: 'hidden_tracking_iframe' };
+  }
+
+  // 5. Check ad banner standard dimensions (if option enabled)
+  if (options.matchDimensions && matchesAdDimensions(iframe)) {
+    return { isBlocked: true, isTrusted: false, reason: 'standard_ad_dimensions' };
+  }
+
+  // 6. Generic untrusted iframe handling
+  // If sandboxUntrusted is enabled, sandbox any third-party iframe that wasn't in the whitelist
+  if (options.sandboxUntrusted) {
+    return { isBlocked: false, shouldSandbox: true, isTrusted: false, reason: 'untrusted_third_party' };
+  }
+
+  return { isBlocked: false, isTrusted: false, reason: null };
+}
+
+
+
+class IframeShieldEngine {
+  constructor(options = {}) {
+    this.options = {
+      action: 'sandbox', // 'sandbox' | 'remove' | 'blank'
+      sandboxFlags: 'allow-scripts allow-same-origin',
+      sandboxUntrusted: true, // Apply safe sandbox to all third-party frames not in whitelist
+      blockTrackingPixels: true,
+      matchDimensions: false,
+      debug: false,
+      trustedDomains: [],
+      adDomains: [],
+      adPatterns: [],
+      onBlocked: null,
+      ...options
+    };
+
+    this.stats = {
+      scanned: 0,
+      blocked: 0,
+      sandboxed: 0,
+      history: []
+    };
+
+    this.observer = null;
+    this.isIntercepting = false;
+    this.originalCreateElement = null;
+    this.originalAppendChild = null;
+    this.originalInsertBefore = null;
+    this.processedFrames = new WeakSet();
+  }
+
+  log(...args) {
+    if (this.options.debug) {
+      console.log('[IframeShield]', ...args);
+    }
+  }
+
+  /**
+   * Process a single iframe element
+   */
+  processIframe(iframe) {
+    if (!iframe || !(iframe instanceof HTMLIFrameElement) || this.processedFrames.has(iframe)) {
+      return false;
+    }
+
+    this.stats.scanned++;
+    const classification = classifyIframe(iframe, this.options);
+
+    this.log('Inspected iframe:', {
+      src: iframe.src || iframe.getAttribute('src'),
+      classification
+    });
+
+    if (classification.isBlocked) {
+      this.handleBlockedIframe(iframe, classification);
+      this.processedFrames.add(iframe);
+      return true;
+    }
+
+    if (classification.shouldSandbox) {
+      this.applySandbox(iframe, 'untrusted_third_party');
+      this.processedFrames.add(iframe);
+      return true;
+    }
+
+    this.processedFrames.add(iframe);
+    return false;
+  }
+
+  /**
+   * Applies the configured blocking action to an ad iframe
+   */
+  handleBlockedIframe(iframe, classification) {
+    this.stats.blocked++;
+    const event = {
+      timestamp: Date.now(),
+      src: iframe.getAttribute('src') || iframe.src,
+      reason: classification.reason,
+      matched: classification.matched || null,
+      action: this.options.action
+    };
+
+    this.stats.history.push(event);
+    if (this.stats.history.length > 100) {
+      this.stats.history.shift();
+    }
+
+    if (typeof this.options.onBlocked === 'function') {
+      try {
+        this.options.onBlocked(event, iframe);
+      } catch (err) {
+        console.error('[IframeShield] Error in onBlocked callback:', err);
+      }
+    }
+
+    this.log(`BLOCKED ad iframe (${classification.reason}):`, iframe);
+
+    switch (this.options.action) {
+      case 'remove':
+        if (iframe.parentNode) {
+          iframe.parentNode.removeChild(iframe);
+        } else {
+          // If not attached yet, neutralize it
+          iframe.src = 'about:blank';
+          iframe.style.display = 'none';
+        }
+        break;
+
+      case 'blank':
+        iframe.src = 'about:blank';
+        iframe.style.display = 'none';
+        iframe.setAttribute('data-iframe-shield-blocked', 'true');
+        break;
+
+      case 'sandbox':
+      default:
+        this.applySandbox(iframe, classification.reason);
+        break;
+    }
+  }
+
+  /**
+   * Applies safe sandbox attributes to neutralize popups, top-navigation & redirects
+   */
+  applySandbox(iframe, reason) {
+    this.stats.sandboxed++;
+    const safeFlags = this.options.sandboxFlags || 'allow-scripts allow-same-origin';
+    iframe.setAttribute('sandbox', safeFlags);
+    iframe.setAttribute('data-iframe-shield-sandboxed', reason);
+    this.log(`Sandboxed iframe with flags "${safeFlags}" (Reason: ${reason})`);
+  }
+
+  /**
+   * Intercepts DOM creation and insertions so ads can be caught before execution
+   */
+  startInterception() {
+    if (this.isIntercepting || typeof window === 'undefined') return;
+    this.isIntercepting = true;
+
+    const self = this;
+
+    // 1. Monkey-patch document.createElement to intercept new iframes
+    if (typeof document !== 'undefined' && document.createElement) {
+      this.originalCreateElement = document.createElement;
+      document.createElement = function(tagName, options) {
+        const element = self.originalCreateElement.call(document, tagName, options);
+        if (typeof tagName === 'string' && tagName.toLowerCase() === 'iframe') {
+          self.hookIframeAttributes(element);
+        }
+        return element;
+      };
+    }
+
+    // 2. Monkey-patch appendChild
+    if (typeof Node !== 'undefined' && Node.prototype.appendChild) {
+      this.originalAppendChild = Node.prototype.appendChild;
+      Node.prototype.appendChild = function(child) {
+        if (child instanceof HTMLIFrameElement) {
+          self.processIframe(child);
+          if (self.options.action === 'remove' && !child.parentNode && child.src === 'about:blank') {
+            return child; // Do not append removed elements
+          }
+        }
+        return self.originalAppendChild.call(this, child);
+      };
+    }
+
+    // 3. Setup MutationObserver for elements added via innerHTML / template strings
+    if (typeof MutationObserver !== 'undefined' && document.documentElement) {
+      this.observer = new MutationObserver(mutations => {
+        for (let i = 0; i < mutations.length; i++) {
+          const addedNodes = mutations[i].addedNodes;
+          for (let j = 0; j < addedNodes.length; j++) {
+            const node = addedNodes[j];
+            if (node.nodeType === 1) { // ELEMENT_NODE
+              if (node.tagName === 'IFRAME') {
+                self.processIframe(node);
+              } else if (node.querySelectorAll) {
+                const iframes = node.querySelectorAll('iframe');
+                for (let k = 0; k < iframes.length; k++) {
+                  self.processIframe(iframes[k]);
+                }
+              }
+            }
+          }
+        }
+      });
+
+      this.observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    // Scan any existing iframes currently in the DOM
+    this.scan();
+  }
+
+  /**
+   * Hooks into an iframe's src and setAttribute to catch late-binding URLs
+   */
+  hookIframeAttributes(iframe) {
+    const self = this;
+    const originalSetAttribute = iframe.setAttribute;
+
+    iframe.setAttribute = function(name, value) {
+      const res = originalSetAttribute.call(this, name, value);
+      if (name.toLowerCase() === 'src') {
+        self.processIframe(iframe);
+      }
+      return res;
+    };
+  }
+
+  /**
+   * Scans all iframes currently attached in document
+   */
+  scan() {
+    if (typeof document === 'undefined') return;
+    const iframes = document.querySelectorAll('iframe');
+    for (let i = 0; i < iframes.length; i++) {
+      this.processIframe(iframes[i]);
+    }
+  }
+
+  /**
+   * Disables interception and restores original DOM methods
+   */
+  stop() {
+    if (this.originalCreateElement) {
+      document.createElement = this.originalCreateElement;
+      this.originalCreateElement = null;
+    }
+    if (this.originalAppendChild) {
+      Node.prototype.appendChild = this.originalAppendChild;
+      this.originalAppendChild = null;
+    }
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+    this.isIntercepting = false;
+  }
+}
+
+
+
+
+let defaultInstance = null;
+
+const IframeShield = {
+  /**
+   * Initializes the ad shield with optional configuration
+   */
+  init(options = {}) {
+    if (!defaultInstance) {
+      defaultInstance = new IframeShieldEngine(options);
+      defaultInstance.startInterception();
+    }
+    return defaultInstance;
+  },
+
+  /**
+   * Returns current blocking and scanning statistics
+   */
+  getStats() {
+    return defaultInstance ? defaultInstance.stats : { scanned: 0, blocked: 0, sandboxed: 0, history: [] };
+  },
+
+  /**
+   * Whitelist a domain dynamically
+   */
+  allowDomain(domain) {
+    if (!domain) return;
+    if (defaultInstance) {
+      defaultInstance.options.trustedDomains.push(domain);
+    }
+  },
+
+  /**
+   * Blacklist an ad domain dynamically
+   */
+  blockDomain(domain) {
+    if (!domain) return;
+    if (defaultInstance) {
+      defaultInstance.options.adDomains.push(domain);
+    }
+  },
+
+  /**
+   * Register a callback fired whenever an ad or untrusted iframe is blocked
+   */
+  onBlocked(callback) {
+    if (defaultInstance) {
+      defaultInstance.options.onBlocked = callback;
+    }
+  },
+
+  /**
+   * Manually trigger a DOM scan for existing iframes
+   */
+  scan() {
+    if (defaultInstance) {
+      defaultInstance.scan();
+    }
+  },
+
+  /**
+   * Cleanly stop interception and restore browser methods
+   */
+  destroy() {
+    if (defaultInstance) {
+      defaultInstance.stop();
+      defaultInstance = null;
+    }
+  },
+
+  /**
+   * Create an isolated engine instance (useful for unit testing or custom wrappers)
+   */
+  createInstance(options = {}) {
+    return new IframeShieldEngine(options);
+  },
+
+  /**
+   * Generate recommended Content Security Policy (CSP) directives for Cloudflare / web servers
+   */
+  generateCSP(customDomains = []) {
+    const trusted = [...DEFAULT_TRUSTED_DOMAINS, ...customDomains]
+      .filter(d => !d.includes('/'))
+      .map(d => `https://${d}`);
+
+    const uniqueSources = Array.from(new Set(["'self'", ...trusted])).join(' ');
+    return `frame-src ${uniqueSources}; frame-ancestors 'self';`;
+  },
+
+  /**
+   * Expose default lists for developer inspection
+   */
+  DEFAULT_TRUSTED_DOMAINS,
+  DEFAULT_AD_DOMAINS
+};
+
+// Automatic initialization when included directly in a browser <script> tag
+if (typeof window !== 'undefined') {
+  window.IframeShield = IframeShield;
+
+  // Auto-init unless explicitly turned off via window.__IFRAME_SHIELD_NO_AUTO__
+  if (!window.__IFRAME_SHIELD_NO_AUTO__) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        IframeShield.init();
+      });
+    } else {
+      IframeShield.init();
+    }
+  }
+}
+
+
+
+export { IframeShield, DEFAULT_TRUSTED_DOMAINS, DEFAULT_AD_DOMAINS };
+export default IframeShield;

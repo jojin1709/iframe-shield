@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "iframe-shield-worker",
+  "main": "integrations/cloudflare-worker.js",
+  "compatibility_date": "2026-10-16",
+  "observability": {
+    "enabled": true
+  }
+}
