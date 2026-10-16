@@ -1383,7 +1383,7 @@
         </div>
 
         <pre><code id="codeSnippetContent">&lt;!-- Drop this into your &lt;head&gt; tag to protect the entire page --&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"&gt;&lt;/script&gt;</code></pre>
+&lt;script src="https://cdn.jsdelivr.net/npm/@jojin1709/iframe-shield/dist/iframe-shield.min.js"&gt;&lt;/script&gt;</code></pre>
       </div>
     </section>
   </main>
@@ -1397,7 +1397,7 @@
       <div class="footer-links">
         <a href="./docs/">Documentation</a>
         <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://github.com/jojin1709/iframe-shield/releases/tag/v1.0.0" target="_blank" rel="noopener">v1.0.0 Release</a>
+        <a href="https://github.com/jojin1709/iframe-shield/releases/tag/v1.0.1" target="_blank" rel="noopener">v1.0.1 Release</a>
       </div>
     </div>
   </footer>
@@ -1627,7 +1627,7 @@
     const snippets = {
       script: {
         file: 'index.html',
-        code: `<!-- Drop into your <head> tag to protect the entire page -->\n<script src="https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"><\/script>`
+        code: `<!-- Drop into your <head> tag to protect the entire page -->\n<script src="https://cdn.jsdelivr.net/npm/@jojin1709/iframe-shield/dist/iframe-shield.min.js"><\/script>`
       },
       npm: {
         file: 'main.js',
@@ -1643,7 +1643,7 @@
       },
       cf: {
         file: 'worker.js',
-        code: `// Cloudflare Edge Worker with HTMLRewriter injection\nexport default {\n  async fetch(request) {\n    const response = await fetch(request);\n    return new HTMLRewriter().on('head', {\n      element(el) {\n        el.append('<script src="https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"><\\/script>', { html: true });\n      }\n    }).transform(response);\n  }\n};`
+        code: `// Cloudflare Edge Worker with HTMLRewriter injection\nexport default {\n  async fetch(request) {\n    const response = await fetch(request);\n    return new HTMLRewriter().on('head', {\n      element(el) {\n        el.append('<script src="https://cdn.jsdelivr.net/npm/@jojin1709/iframe-shield/dist/iframe-shield.min.js"><\\/script>', { html: true });\n      }\n    }).transform(response);\n  }\n};`
       }
     };
 

@@ -24,7 +24,7 @@ export default {
       element(element) {
         element.append(
           `\n<!-- Injected by Cloudflare Edge Worker via iframe-shield (Developed by JOJIN JOHN) -->\n` +
-          `<script src="https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"></script>\n`,
+          `<script src="https://cdn.jsdelivr.net/npm/@jojin1709/iframe-shield/dist/iframe-shield.min.js"></script>\n`,
           { html: true }
         );
       }

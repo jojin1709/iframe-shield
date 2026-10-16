@@ -28,7 +28,7 @@ It intercepts DOM iframe creations before they execute, evaluates domains agains
 <p><strong>Add to your website</strong></p>
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jojin1709/iframe-shield/dist/iframe-shield.min.js"></script>
 ```
 
 <sub>Drop-in CDN script tag auto-initializes with zero configuration required.</sub>
@@ -126,7 +126,7 @@ Add this script tag to your HTML `<head>` or before the closing `</body>` tag:
 
 ```html
 <!-- Load and auto-initialize iframe-shield -->
-<script src="https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jojin1709/iframe-shield/dist/iframe-shield.min.js"></script>
 ```
 
 > **Note**: When loaded via `<script>`, `iframe-shield` initializes automatically with secure defaults. To configure it manually, declare `window.__IFRAME_SHIELD_NO_AUTO__ = true;` before loading the script.
@@ -161,7 +161,7 @@ export default {
     const response = await fetch(request);
     return new HTMLRewriter().on('head', {
       element(el) {
-        el.append('<script src="https://cdn.jsdelivr.net/npm/iframe-shield/dist/iframe-shield.min.js"></script>', { html: true });
+        el.append('<script src="https://cdn.jsdelivr.net/npm/@jojin1709/iframe-shield/dist/iframe-shield.min.js"></script>', { html: true });
       }
     }).transform(response);
   }
