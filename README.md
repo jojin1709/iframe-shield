@@ -8,7 +8,15 @@
 ### Autonomous, client-side iframe ad & popup blocker SDK for web applications.
 
 <p>
-  <strong>Developed by <a href="#">JOJIN JOHN</a></strong>
+  <strong>Developed by <a href="https://github.com/jojin1709">JOJIN JOHN</a></strong>
+</p>
+
+<p>
+  <a href="https://github.com/jojin1709/iframe-shield/actions"><img src="https://github.com/jojin1709/iframe-shield/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://workers.cloudflare.com"><img src="https://img.shields.io/badge/Cloudflare-Worker%20Ready-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Tests-13%2F13%20Passing-brightgreen.svg" alt="Tests Passing"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Bundle%20Size-%3C%204KB-blue.svg" alt="Bundle Size"></a>
 </p>
 
 It intercepts DOM iframe creations before they execute, evaluates domains against threat heuristics, and neutralizes rogue ads and popups on the fly. **No ads, zero breaking changes.**

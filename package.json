@@ -7,6 +7,18 @@
   "module": "dist/iframe-shield.esm.js",
   "browser": "dist/iframe-shield.min.js",
   "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/iframe-shield.esm.js",
+      "require": "./dist/iframe-shield.cjs.js",
+      "default": "./dist/iframe-shield.min.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "dist/iframe-shield.min.js"
+  ],
   "scripts": {
     "test": "node test/test.js",
     "build": "node scripts/build.js",
