@@ -1,6 +1,9 @@
 {
-  "name": "iframe-shield",
-  "version": "1.0.0",
+  "name": "@jojin1709/iframe-shield",
+  "version": "1.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "description": "Developer library to protect web applications from rogue iframe ads, popups, and clickjacking.",
   "main": "dist/iframe-shield.cjs.js",

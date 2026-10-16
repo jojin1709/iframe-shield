@@ -1122,7 +1122,7 @@
       <section class="spec-header-card" id="overview">
         <div class="spec-title-row">
           <h1>iframe-shield Specification</h1>
-          <span class="version-pill">SDK v1.0.0 &bull; Production Spec</span>
+          <span class="version-pill">SDK v1.0.1 &bull; Production Spec</span>
         </div>
         <p class="spec-description">
           Official interactive developer specification and SDK reference for <code>iframe-shield</code>. A lightweight client-side security engine that intercepts iframe creation, neutralizes rogue ads and tracking pixels, disarms unauthorized popups and redirects, and validates trusted third-party embeds.
@@ -1135,7 +1135,7 @@
           </div>
           <div class="spec-meta-item">
             <span>PACKAGE</span>
-            <strong>iframe-shield</strong>
+            <strong>@jojin1709/iframe-shield</strong>
           </div>
           <div class="spec-meta-item">
             <span>LICENSE</span>
@@ -1163,7 +1163,7 @@
             <span>terminal</span>
             <button class="btn-copy" onclick="copyCode(this)">Copy</button>
           </div>
-          <pre><code>npm install iframe-shield</code></pre>
+          <pre><code>npm install @jojin1709/iframe-shield</code></pre>
         </div>
 
         <div class="code-block">
@@ -1197,7 +1197,7 @@
             <span>main.ts</span>
             <button class="btn-copy" onclick="copyCode(this)">Copy</button>
           </div>
-          <pre><code><span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'iframe-shield'</span>;
+          <pre><code><span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'@jojin1709/iframe-shield'</span>;
 
 <span class="code-com">// Start DOM protection</span>
 IframeShield.<span class="code-fn">init</span>({
@@ -1822,7 +1822,7 @@ IframeShield.<span class="code-fn">init</span>({
             <span>src/main.ts</span>
             <button class="btn-copy" onclick="copyCode(this)">Copy</button>
           </div>
-          <pre><code><span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'iframe-shield'</span>;
+          <pre><code><span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'@jojin1709/iframe-shield'</span>;
 
 IframeShield.<span class="code-fn">init</span>({
   action: <span class="code-str">'sandbox'</span>,
@@ -1850,7 +1850,7 @@ IframeShield.<span class="code-fn">init</span>({
           <pre><code><span class="code-str">'use client'</span>;
 
 <span class="code-kw">import</span> { useEffect } <span class="code-kw">from</span> <span class="code-str">'react'</span>;
-<span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'iframe-shield'</span>;
+<span class="code-kw">import</span> { IframeShield } <span class="code-kw">from</span> <span class="code-str">'@jojin1709/iframe-shield'</span>;
 
 <span class="code-kw">export function</span> <span class="code-fn">SecurityProvider</span>({ children }: { children: React.ReactNode }) {
   useEffect(() =&gt; {

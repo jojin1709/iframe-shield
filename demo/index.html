@@ -1023,7 +1023,7 @@
         <a href="./docs/" class="nav-link">Documentation</a>
         <a href="#playground" class="nav-link">Playground</a>
         <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener" class="nav-link">GitHub</a>
-        <a href="https://www.npmjs.com/package/iframe-shield" target="_blank" rel="noopener" class="nav-link">npm</a>
+        <a href="https://www.npmjs.com/package/@jojin1709/iframe-shield" target="_blank" rel="noopener" class="nav-link">npm</a>
       </nav>
 
       <div class="nav-actions">
@@ -1062,8 +1062,8 @@
         <a href="https://github.com/jojin1709/iframe-shield" target="_blank" rel="noopener" class="btn-secondary">
           <span>GitHub</span>
         </a>
-        <a href="https://www.npmjs.com/package/iframe-shield" target="_blank" rel="noopener" class="btn-secondary">
-          <span>npm v1.0.0</span>
+        <a href="https://www.npmjs.com/package/@jojin1709/iframe-shield" target="_blank" rel="noopener" class="btn-secondary">
+          <span>npm v1.0.1</span>
         </a>
       </div>
 
@@ -1631,15 +1631,15 @@
       },
       npm: {
         file: 'main.js',
-        code: `// 1. Install\n// npm install iframe-shield\n\nimport { IframeShield } from 'iframe-shield';\n\nIframeShield.init({\n  action: 'sandbox',\n  sandboxUntrusted: true\n});`
+        code: `// 1. Install\n// npm install @jojin1709/iframe-shield\n\nimport { IframeShield } from '@jojin1709/iframe-shield';\n\nIframeShield.init({\n  action: 'sandbox',\n  sandboxUntrusted: true\n});`
       },
       vite: {
         file: 'src/main.js',
-        code: `import { IframeShield } from 'iframe-shield';\n\n// Initialize before mounting application\nIframeShield.init({\n  action: 'sandbox',\n  sandboxUntrusted: true\n});\n\nimport './app.js';`
+        code: `import { IframeShield } from '@jojin1709/iframe-shield';\n\n// Initialize before mounting application\nIframeShield.init({\n  action: 'sandbox',\n  sandboxUntrusted: true\n});\n\nimport './app.js';`
       },
       next: {
         file: 'app/layout.jsx',
-        code: `'use client';\nimport { useEffect } from 'react';\nimport { IframeShield } from 'iframe-shield';\n\nexport default function RootLayout({ children }) {\n  useEffect(() => {\n    IframeShield.init({ action: 'sandbox' });\n    return () => IframeShield.destroy();\n  }, []);\n\n  return <html><body>{children}</body></html>;\n}`
+        code: `'use client';\nimport { useEffect } from 'react';\nimport { IframeShield } from '@jojin1709/iframe-shield';\n\nexport default function RootLayout({ children }) {\n  useEffect(() => {\n    IframeShield.init({ action: 'sandbox' });\n    return () => IframeShield.destroy();\n  }, []);\n\n  return <html><body>{children}</body></html>;\n}`
       },
       cf: {
         file: 'worker.js',

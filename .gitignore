@@ -6,7 +6,9 @@ yarn-error.log*
 Thumbs.db
 *.log
 .env
+.npmrc
 .idea/
 .vscode/
 .wrangler/
 worker-configuration.d.ts
+

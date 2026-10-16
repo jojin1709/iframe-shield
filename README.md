@@ -50,7 +50,7 @@ It intercepts DOM iframe creations before they execute, evaluates domains agains
 </div>
 
 > [!TIP]
-> **Using a modern bundler?** Install via npm: `npm install iframe-shield` and import `{ IframeShield } from 'iframe-shield'`. Full TypeScript and modern ESM/CommonJS modules are supported out of the box.
+> **Using a modern bundler?** Install via npm: `npm install @jojin1709/iframe-shield` and import `{ IframeShield } from '@jojin1709/iframe-shield'`. Full TypeScript and modern ESM/CommonJS modules are supported out of the box.
 
 ## Table of Contents
 
@@ -134,11 +134,11 @@ Add this script tag to your HTML `<head>` or before the closing `</body>` tag:
 ### Option 2: npm / Modern Bundlers
 
 ```bash
-npm install iframe-shield
+npm install @jojin1709/iframe-shield
 ```
 
 ```javascript
-import { IframeShield } from 'iframe-shield';
+import { IframeShield } from '@jojin1709/iframe-shield';
 
 // Initialize with custom options
 IframeShield.init({
